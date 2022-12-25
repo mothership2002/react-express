@@ -3,6 +3,8 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { RouterProvider } from 'react-router';
 import { router } from './router/router';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './assets/css/bootstrap.css';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
