@@ -13,8 +13,8 @@ export default function Post() {
     //   resp.json().then((res) => {
     //     setItem(res);
     //   });
-    // }); 함수닫힘열림이 좀복잡하긴하다
-
+    // }); 
+    
     const promise = new Promise((resolve, reject) => {
       // 시간이 걸리는 로직
       setTimeout(() => {
@@ -30,7 +30,9 @@ export default function Post() {
       console.log('aaaa');
     });
     
-    // (async () => { // 정리하면 async가 await 필수조건이란거아냐
+
+
+    // (async () => { 
     //   const url = `/post/${param.no}`;
     //   const res = await fetch(url);
     //   const resJson = await res.json();
