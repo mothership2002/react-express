@@ -1,10 +1,13 @@
 import React, { Dispatch, useEffect, useState } from 'react'
 import { Button } from 'react-bootstrap';
 import Table from 'react-bootstrap/esm/Table';
+import { useNavigate } from 'react-router';
 import { ModelArticle } from '../class/ModelArticle';
 import { TYPE_ARTICLE } from '../type/type';
 
 const Board = () => {
+
+  const navigate = useNavigate();
 
   const [dataList, setDataList] = useState<TYPE_ARTICLE[]>([]);
 
@@ -32,6 +35,18 @@ const Board = () => {
         title: '안녕하세요',
         regNickName: '잉기모리',
         regDateTime: '2022.12.24 20:39:14',
+      },
+      {
+        no: 1,
+        title: '안녕하세요1',
+        regNickName: '잉',
+        regDateTime: '2022.12.25 20:39:14',
+      },
+      {
+        no: 2,
+        title: '안녕하세요',
+        regNickName: '잉기',
+        regDateTime: '2022.12.25 22:39:14',
       }
     ]);
 
@@ -45,45 +60,31 @@ const Board = () => {
   const articleList = () => {
     return dataList.map((item, index) => {
       return (
-        <div style={{ display: 'flex', flexDirection: 'row' }} key={index}>
-          <div style={{ flex: '1' }}>{item.no}</div>
-          <div style={{ flex: '3' }}>{item.title}</div>
-          <div style={{ flex: '1' }}>{item.regNickName}</div>
-          <div style={{ flex: '1' }}>{item.regDateTime}</div>
-        </div>
+        <tr key={index} onClick={() => {
+          navigate(`/post/${item.no}`)
+        }}>
+          <td>{item.no}</td>
+          <td>{item.title}</td>
+          <td>{item.regNickName}</td>
+          <td>{item.regDateTime}</td>
+        </tr>
       )
     })
   };
-
+  
   return (
     <>
       <Table>
         <thead>
           <tr>
-            <th>#</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Username</th>
+            <th>글 번호</th>
+            <th>글 제목</th>
+            <th>작성자</th>
+            <th>생성일</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td colSpan={2}>Larry the Bird</td>
-            <td>@twitter</td>
-          </tr>
+          {articleList()}
         </tbody>
       </Table>
     </>
