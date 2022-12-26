@@ -28,37 +28,54 @@ const Board = () => {
   }, [test])
 
   useEffect(() => {
-    setInterval(() => {
-      setTest(c => {
-        return c + 1;
+    (async () => {
+      const res = await fetch('http://localhost:3001/getTestJson').catch(e => {
+      console.log('error catch');
+      alert('데이터 조회에 실패 했습니다.');
+      return {
+          json: () => {
+            return undefined;
+          }
+        };
       });
-    }, 1000);
+      const resJson = await res.json();
+      if (resJson) {
+        console.log(resJson);
+        setDataList(resJson);
+      }
+    }) ();
+
+    // setInterval(() => {
+    //   setTest(c => {
+    //     return c + 1;
+    //   });
+    // }, 1000);
 
     // const model = new ModelArticle();
     // model.no = 0;
     // model.title = "하이";
     // model.regDateTime
 
-    setDataList([
-      {
-        no: 0,
-        title: '안녕하세요',
-        regNickName: '잉기모리',
-        regDateTime: '2022.12.24 20:39:14',
-      },
-      {
-        no: 1,
-        title: '안녕하세요1',
-        regNickName: '잉',
-        regDateTime: '2022.12.25 20:39:14',
-      },
-      {
-        no: 2,
-        title: '안녕하세요',
-        regNickName: '잉기',
-        regDateTime: '2022.12.25 22:39:14',
-      }
-    ]);
+    // setDataList([
+    //   {
+    //     no: 0,
+    //     title: '안녕하세요',
+    //     regNickName: '잉기모리',
+    //     regDateTime: '2022.12.24 20:39:14',
+    //   },
+    //   {
+    //     no: 1,
+    //     title: '안녕하세요1',
+    //     regNickName: '잉',
+    //     regDateTime: '2022.12.25 20:39:14',
+    //   },
+    //   {
+    //     no: 2,
+    //     title: '안녕하세요',
+    //     regNickName: '잉기',
+    //     regDateTime: '2022.12.25 22:39:14',
+    //   }
+    // ]);
 
     return () => {
 
