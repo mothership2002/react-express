@@ -37,4 +37,14 @@ router.get('/getTestJson', (req, res, next) => {
   // res.send(result);
 });
 
+router.post('/testPost', (req, resp, next) => {
+  
+  console.log(req.body);
+  // const title = req.body.title;
+  // const regNickname = req.body.regNickname;
+  // const reqJson = req.body.json();
+  resp.json(req.body);
+
+});
+
 module.exports = router;
