@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router';
+import { useRecoilState } from 'recoil';
+import { textState } from '../store/test';
 
 export default function Post() {
   const param = useParams<{no: string}>();
 
   const [item , setItem] = useState([]);
+
+  const [text, setText] = useRecoilState(textState);
 
   useEffect(() => {
     console.log(param);
@@ -14,7 +18,7 @@ export default function Post() {
     //     setItem(res);
     //   });
     // }); 
-    
+
     const promise = new Promise((resolve, reject) => {
       // 시간이 걸리는 로직
       setTimeout(() => {
@@ -29,8 +33,6 @@ export default function Post() {
     promise.then(res => { 
       console.log('aaaa');
     });
-    
-
 
     // (async () => { 
     //   const url = `/post/${param.no}`;
@@ -48,6 +50,7 @@ export default function Post() {
 
   return (
     <>
+      <button onClick={() => setText('click') }>{text}</button>
       <div id=''>Post</div>
     </>
   )

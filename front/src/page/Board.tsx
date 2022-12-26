@@ -1,9 +1,9 @@
-import React, { Dispatch, useEffect, useState } from 'react'
-import { Button } from 'react-bootstrap';
+import { useEffect, useState } from 'react'
+import { useRecoilState } from 'recoil';
 import Table from 'react-bootstrap/esm/Table';
 import { useNavigate } from 'react-router';
-import { ModelArticle } from '../class/ModelArticle';
 import { TYPE_ARTICLE } from '../type/type';
+import { textState } from '../store/test';
 
 const Board = () => {
 
@@ -11,7 +11,9 @@ const Board = () => {
 
   const [dataList, setDataList] = useState<TYPE_ARTICLE[]>([]);
 
-  const [test, setTest] = useState<number>(0)
+  const [test, setTest] = useState<number>(0);
+  
+  const [text, setText] = useRecoilState(textState);
 
   useEffect(() => {
     console.log("1");
