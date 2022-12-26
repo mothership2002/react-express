@@ -1,15 +1,10 @@
 import { useEffect, useState } from 'react'
-import { useRecoilState } from 'recoil';
 import Table from 'react-bootstrap/esm/Table';
 import { useNavigate } from 'react-router';
-<<<<<<< HEAD
-=======
 import { useRecoilState } from 'recoil';
 import { ModelArticle } from '../class/ModelArticle';
 import { textState } from '../store/test';
->>>>>>> origin/master
 import { TYPE_ARTICLE } from '../type/type';
-import { textState } from '../store/test';
 
 const Board = () => {
 
@@ -19,8 +14,6 @@ const Board = () => {
 
   const [test, setTest] = useState<number>(0);
   
-  const [text, setText] = useRecoilState(textState);
-
   const [text, setText] = useRecoilState(textState);
 
   useEffect(() => {

@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-import { useEffect, useState } from 'react'
-=======
 import React, { useEffect, useState } from 'react'
 import { Button } from 'react-bootstrap';
->>>>>>> origin/master
 import { useParams } from 'react-router';
 import { useRecoilState } from 'recoil';
 import { textState } from '../store/test';
@@ -38,7 +34,6 @@ export default function Post() {
     promise.then(res => { 
       console.log('aaaa');
     });
-
     // (async () => { 
     //   const url = `/post/${param.no}`;
     //   const res = await fetch(url);
@@ -55,14 +50,10 @@ export default function Post() {
 
   return (
     <>
-<<<<<<< HEAD
-      <button onClick={() => setText('click') }>{text}</button>
-=======
       {text}
       <Button onClick={() => {
         setText('changed in post');
       }}>change text value</Button>
->>>>>>> origin/master
       <div id=''>Post</div>
     </>
   )
