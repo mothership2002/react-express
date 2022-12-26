@@ -2,6 +2,12 @@ import { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil';
 import Table from 'react-bootstrap/esm/Table';
 import { useNavigate } from 'react-router';
+<<<<<<< HEAD
+=======
+import { useRecoilState } from 'recoil';
+import { ModelArticle } from '../class/ModelArticle';
+import { textState } from '../store/test';
+>>>>>>> origin/master
 import { TYPE_ARTICLE } from '../type/type';
 import { textState } from '../store/test';
 
@@ -13,6 +19,8 @@ const Board = () => {
 
   const [test, setTest] = useState<number>(0);
   
+  const [text, setText] = useRecoilState(textState);
+
   const [text, setText] = useRecoilState(textState);
 
   useEffect(() => {
@@ -63,7 +71,8 @@ const Board = () => {
     return dataList.map((item, index) => {
       return (
         <tr key={index} onClick={() => {
-          navigate(`/post/${item.no}`)
+          setText('set in board');      
+          navigate(`/post/${item.no}`);
         }}>
           <td>{item.no}</td>
           <td>{item.title}</td>
@@ -76,6 +85,7 @@ const Board = () => {
   
   return (
     <>
+      {text}
       <Table>
         <thead>
           <tr>
