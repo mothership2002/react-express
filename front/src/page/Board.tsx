@@ -22,7 +22,7 @@ const Board = () => {
 
   useEffect(() => {
     (async () => {
-      const res = await fetch('http://localhost:3001/getTestJson').catch(e => {
+      const res = await fetch('http://localhost:3001/api/post-all').catch(e => {
       console.log('error catch');
       alert('데이터 조회에 실패 했습니다.');
       return {

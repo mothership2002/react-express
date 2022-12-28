@@ -2,17 +2,18 @@ import React, { useEffect, useState } from 'react'
 import { Button } from 'react-bootstrap';
 import { useParams } from 'react-router';
 import { useRecoilState } from 'recoil';
-import { textState } from '../store/test';
+import { textState } from '../../store/test';
+
 
 export default function Post() {
-  const param = useParams<{no: string}>();
+  // const param = useParams<{no: string}>();
 
-  const [item , setItem] = useState([]);
+  // const [item , setItem] = useState([]);
 
   const [text, setText] = useRecoilState(textState);
 
   useEffect(() => {
-    console.log(param);
+    // console.log(param);
 
     // fetch("/post/" + param).then((resp) => {
     //   resp.json().then((res) => {
@@ -32,15 +33,8 @@ export default function Post() {
     });
 
     promise.then(res => { 
-      console.log('aaaa');
+      console.log('promise test');
     });
-    // (async () => { 
-    //   const url = `/post/${param.no}`;
-    //   const res = await fetch(url);
-    //   const resJson = await res.json();
-    //   console.log(resJson);
-    //   setItem(resJson);
-    // }) ();
 
     return () => {
       // on destroy
@@ -54,7 +48,11 @@ export default function Post() {
       <Button onClick={() => {
         setText('changed in post');
       }}>change text value</Button>
-      <div id=''>Post</div>
+      <div id='title'></div>
+      <div id="content"></div>
+      <div id="regNickName"></div>
+      <div id="createDate"></div>
+      <div id="updateDate"></div>
     </>
   )
 };
