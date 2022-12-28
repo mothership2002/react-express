@@ -41,19 +41,22 @@ router.get('/api/post-all', (req, resp, next) => {
 
 // 상세조회
 router.get('/api/post/:postId',(req, resp, next) => {
+  const selectId = req.params.postId;
+
   const post =  [ 
                   { 
-                    no : req.params.postId ,
+                    no : 'selectId',
                     title : 'title',
                     content : 'content',
                     regNickname : 'regNickname',
                     regDateTime : 'regDateTime',
                     updateDateTime : 'updateDateTime',
                   },
-                ]; // 대충 코드값으로 셀렉때리는 쿼리;
+                ]; 
 
   const replyList = [ 
                       { 
+                        createNo : '',
                         replyNo : '0' ,
                         replyContent : 'reply-content',
                         replyCreater : 'nickname',
@@ -61,6 +64,7 @@ router.get('/api/post/:postId',(req, resp, next) => {
                         replyUpdateDate : 'updateDate',
                       },
                       { 
+                        createNo : '',
                         replyNo : '1' ,
                         replyContent : 'reply-content 1',
                         replyCreater : 'nickname 1',
@@ -68,12 +72,13 @@ router.get('/api/post/:postId',(req, resp, next) => {
                         replyUpdateDate : 'updateDate 1',
                       },
                       { 
+                        createNo : '',
                         replyNo : '2' ,
                         replyContent : 'reply-content 2',
                         replyCreater : 'nickname 2',
                         replyCreateDate : 'createDate 2',
                         replyUpdateDate : 'updateDate 2',
-                      } 
+                      },
                     ]
 
     const item =  [ 
