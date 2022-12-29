@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react'
-import { Button } from 'react-bootstrap';
 import { useParams } from 'react-router';
-import { useRecoilState } from 'recoil';
-import { textState } from '../../store/test';
+import { TYPE_POST } from '../../type/type';
 
 
 export default function Post() {
-  // const param = useParams<{no: string}>();
+  const param = useParams<{no: string}>();
 
-  // const [item , setItem] = useState([]);
+  const [post , setPost] = useState<TYPE_POST>();
 
-  const [text, setText] = useRecoilState(textState);
+  // const [text, setText] = useRecoilState(textState);
 
   useEffect(() => {
+
     // console.log(param);
 
     // fetch("/post/" + param).then((resp) => {
@@ -21,20 +20,39 @@ export default function Post() {
     //   });
     // }); 
 
-    const promise = new Promise((resolve, reject) => {
-      // 시간이 걸리는 로직
-      setTimeout(() => {
-        try {
-          resolve('result');
-        } catch (error) {
-          resolve('');
-        }
-      }, 2000);
-    });
+    // const promise = new Promise((resolve, reject) => {
+    //   // 시간이 걸리는 로직
+    //   setTimeout(() => {
+    //     try {
+    //       resolve('result');
+    //     } catch (error) {
+    //       resolve('');
+    //     }
+    //   }, 2000);
+    // });
 
-    promise.then(res => { 
-      console.log('promise test');
-    });
+    // promise.then(res => { 
+    //   console.log('promise test');
+    // });
+
+    (async () => {
+      const url = `http://localhost:3001/api/post/${param.no}`
+      const result = await fetch(url);
+      const resJson = await result.json();
+
+      console.log(resJson);
+      setPost(resJson);
+      
+    })()
+
+    // fetch(`http://localhost:3001/api/post/${param.no}`).then(res => {
+    //   res.json().then((result) => {
+    //     setPost(result);
+    //     console.log(result);
+        
+    //     console.log(post);
+    //   });
+    // });
 
     return () => {
       // on destroy
@@ -44,15 +62,17 @@ export default function Post() {
 
   return (
     <>
-      {text}
-      <Button onClick={() => {
+      {/* {text} */}
+      {/* <Button onClick={() => {
         setText('changed in post');
-      }}>change text value</Button>
-      <div id='title'></div>
-      <div id="content"></div>
-      <div id="regNickName"></div>
-      <div id="createDate"></div>
-      <div id="updateDate"></div>
+      }}>change text value</Button> */}
+      <div id='no'>{post?.no}</div>
+      <div id='title'>{post?.title}</div>
+      <div id="content">{post?.content}</div>
+      <div id="regNickName">{post?.regNickName}</div>
+      <div id="regDateTime">{post?.regDateTime}</div>
+      <div id="updateDateTime">{post?.updateDateTime}</div>
+
     </>
-  )
+  );
 };

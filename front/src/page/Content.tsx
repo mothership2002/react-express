@@ -4,36 +4,48 @@ import Post from './component/Post'
 import { useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { textState } from '../store/test';
+import { TYPE_POST, TYPE_REPLY } from '../type/type';
+// import { ModelContent } from '../class/ModelArticle';
 
 
-export default function Content() {
+const Content = () => {
 
   const param = useParams<{no: string}>();
 
-  const [item , setItem] = useState([]);
+  // const [post , setPost] = useState<TYPE_POST[]>([]);
 
-  const [replyList, setReplyList] = useState([]);
+  // // const [item , setItem] = useState<any>([]); 
 
-  const [text, setText] = useRecoilState(textState);
+  // const [replyList, setReplyList] = useState<TYPE_REPLY[]>([]);
 
-  useEffect(() => {
-
-    (async () => { 
-      const url = `http://localhost:3001/api/post/${param.no}`;
-      const res = await fetch(url);
-      const resJson = await res.json();
-      console.log(resJson);
-      setItem(resJson);
-    })();
+  // useEffect(() => {
     
+  //   (async () => { 
+  //     const url = `http://localhost:3001/api/post/${param.no}`;
+  //     const res = await fetch(url);
+  //     const resJson = await res.json();
+      
+  //     // setPost(resJson.data);
+  //     setPost(resJson.post);
+  //     console.log(post);
+      
+  //     // setItem( () => {
+  //     //   const newItem = resJson;
+  //     //   console.log(newItem);
+  //     //   return newItem;
+  //     // })
+    
+      
+  //   })();
 
-  },[]);
-
+  // }, []);
 
   return (
     <>
-      <Post/>
-      <Reply/>
-    </>
+      <Post />
+      <Reply />
+    </> 
   )
-}
+};
+
+export default Content;

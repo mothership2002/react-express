@@ -14,13 +14,14 @@ const Board = () => {
 
   const [test, setTest] = useState<number>(0);
   
-  const [text, setText] = useRecoilState(textState);
+  // const [text, setText] = useRecoilState(textState);
+
+  // useEffect(() => {
+  //   console.log("1");
+  // }, [test])
 
   useEffect(() => {
-    console.log("1");
-  }, [test])
-
-  useEffect(() => {
+    
     (async () => {
       const res = await fetch('http://localhost:3001/api/post-all').catch(e => {
       console.log('error catch');
@@ -96,7 +97,7 @@ const Board = () => {
     return dataList.map((item, index) => {
       return (
         <tr key={index} onClick={() => {
-          setText('set in board');      
+          // setText('set in board');      
           navigate(`/post/${item.no}`);
         }}>
           <td>{item.no}</td>
@@ -110,7 +111,7 @@ const Board = () => {
   
   return (
     <>
-      {text}
+      {/* {text} */}
       <Table>
         <thead>
           <tr>
