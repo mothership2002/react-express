@@ -9,37 +9,6 @@ import { TYPE_POST, TYPE_REPLY } from '../type/type';
 
 
 const Content = () => {
-
-  const param = useParams<{no: string}>();
-
-  // const [post , setPost] = useState<TYPE_POST[]>([]);
-
-  // // const [item , setItem] = useState<any>([]); 
-
-  // const [replyList, setReplyList] = useState<TYPE_REPLY[]>([]);
-
-  // useEffect(() => {
-    
-  //   (async () => { 
-  //     const url = `http://localhost:3001/api/post/${param.no}`;
-  //     const res = await fetch(url);
-  //     const resJson = await res.json();
-      
-  //     // setPost(resJson.data);
-  //     setPost(resJson.post);
-  //     console.log(post);
-      
-  //     // setItem( () => {
-  //     //   const newItem = resJson;
-  //     //   console.log(newItem);
-  //     //   return newItem;
-  //     // })
-    
-      
-  //   })();
-
-  // }, []);
-
   return (
     <>
       <Post />

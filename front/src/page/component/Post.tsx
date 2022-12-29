@@ -40,7 +40,6 @@ export default function Post() {
       const result = await fetch(url);
       const resJson = await result.json();
 
-      console.log(resJson);
       setPost(resJson);
       
     })()

@@ -34,7 +34,6 @@ const Board = () => {
       });
       const resJson = await res.json();
       if (resJson) {
-        console.log(resJson);
         setDataList(resJson);
       }
     }) ();
@@ -64,27 +63,6 @@ const Board = () => {
     // model.no = 0;
     // model.title = "하이";
     // model.regDateTime
-
-    // setDataList([
-    //   {
-    //     no: 0,
-    //     title: '안녕하세요',
-    //     regNickName: '잉기모리',
-    //     regDateTime: '2022.12.24 20:39:14',
-    //   },
-    //   {
-    //     no: 1,
-    //     title: '안녕하세요1',
-    //     regNickName: '잉',
-    //     regDateTime: '2022.12.25 20:39:14',
-    //   },
-    //   {
-    //     no: 2,
-    //     title: '안녕하세요',
-    //     regNickName: '잉기',
-    //     regDateTime: '2022.12.25 22:39:14',
-    //   }
-    // ]);
 
     return () => {
 
