@@ -14,13 +14,18 @@ export type TYPE_ARTICLE = {
             //     replyCreater : string,
             //     replyCreateDate : string,
             //     replyUpdateDate : string,
-            //   },     
+            //   },   ON = {
+//   replyFlag : boolean,  
             // ]
 };
 
+export type TOGGLE_CONDITION = {
+  postFlag : boolean,
+  replyListFlag : boolean,
+}
 
-
-
+// export type REPLY_CONDITI
+// }
 
 
 // 테스트용 타입 객체;

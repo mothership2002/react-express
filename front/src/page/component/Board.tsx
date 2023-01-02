@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router';
 import { useRecoilState } from 'recoil';
 import { ModelArticle } from '../../class/ModelArticle';
 import { textState } from '../../store/test';
-import { TYPE_ARTICLE } from '../../type/type';
+import { TOGGLE_CONDITION, TYPE_ARTICLE } from '../../type/type';
 
 const Board = () => {
 
@@ -21,20 +21,32 @@ const Board = () => {
   //   console.log("1");
   // }, [test])
 
-  const [ conditional , setConditional ] = useState<boolean[]>([]);
+  const [ conditional , setConditional ] = useState<TOGGLE_CONDITION[]>([]);
 
   function toggleModule(postNo:number, flag:boolean, object:string) {
+    
+    let copiedFlag = [...conditional];
 
     if( object === 'content') {
 
       // 게시글 토글
       if ( flag !== true ) selectPost(postNo);
   
-      let copiedFlag = [...conditional];
-      copiedFlag[postNo] = !conditional[postNo];
+      const temp = copiedFlag[postNo].postFlag;
+      copiedFlag[postNo].postFlag = !temp;
   
-      setConditional(copiedFlag);
     } 
+    else if ( object === 'reply' ) {
+
+      // 댓글 토글
+      if ( flag !== true ) selectReply(postNo);
+  
+      const temp = copiedFlag[postNo].replyListFlag;
+      copiedFlag[postNo].replyListFlag = !temp;
+      
+    }
+
+    setConditional(copiedFlag);
 
   }
 
@@ -68,8 +80,7 @@ const Board = () => {
 
     let copiedDataList = [...dataList];
     copiedDataList[postNo].reply = resJson;
-    console.log(copiedDataList[postNo].reply);
-    
+
     setDataList(copiedDataList);
   }
 
@@ -96,16 +107,21 @@ const Board = () => {
         };
       });
       const resJson = await res.json();
-      if (resJson) {
+      
+      if (resJson !== null || resJson !== undefined) {
+
         setDataList(resJson);
+        
+        setConditional((v) => {
+          const a :any = [];
+          for ( let i = 0 ; i < resJson.length ; i++ ) {
+            a.push( { postFlag : false , replyListFlag : false });
+          } 
+          v = a;
+          return v;
+        })
       }
       // resJson.length;
-      setConditional((v) => {
-        for ( let i = 0 ; i < resJson.length ; i++ ){
-          v[i] = false;
-        } 
-        return v;
-      })
     }) ();
 
     
@@ -148,12 +164,13 @@ const Board = () => {
       return (
             /* 게시글 정보 / 미디어 함수? */
             <Accordion key={index} className='post-container' >
-              <Accordion.Item eventKey={String(index)} onClick = {() => { toggleModule(index, conditional[index], 'content'); }}>
+              <Accordion.Item eventKey={String(index)}>
                 {/* 뚝뚝 끊기는 느낌이 남아 있음. */}
                 <Accordion.Header 
-                        style={{ display : 'flex',
-                        justifyContent: 'space-around',
-                        textAlign : 'center'}}>
+                        onClick = {() => { toggleModule(index, conditional[index].postFlag, 'content'); }}
+                        style = {{ display : 'flex',
+                                   justifyContent: 'space-around',
+                                   textAlign : 'center'}}>
                   <div style={{ flex : 1 }}>{item.no}</div>
                   <div style={{ flex : 8 }}>{item.title}</div>
                   <div style={{ flex : 2 }}>{item.regNickName}</div>
@@ -170,7 +187,7 @@ const Board = () => {
                   <div style={{marginTop : '20px'}}>
                     <Accordion key={index} className='reply-container' >
                       <Accordion.Item eventKey='0'>
-                        <Accordion.Header onClick={() => selectReply(index)}>
+                        <Accordion.Header onClick={() => toggleModule(index, conditional[index].replyListFlag, 'reply')}>
                           댓글
                         </Accordion.Header>
                         <Accordion.Body>
@@ -206,8 +223,8 @@ const Board = () => {
                                 </div>
                               )
                             }
-
                           })}
+                          여기다 댓글 생성창 만들면 되겠네
                         </Accordion.Body>
                       </Accordion.Item> 
                     </Accordion>
@@ -229,7 +246,7 @@ const Board = () => {
       <Accordion defaultActiveKey='0'>
         <Accordion.Item eventKey='0'>
           <Accordion.Header>
-            게시글
+            <div>게시글</div>
           </Accordion.Header>
           <Accordion.Body>
             {/* {spinning()} */}

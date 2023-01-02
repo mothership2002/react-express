@@ -46,7 +46,7 @@ router.get('/api/post/:postId',(req, resp, next) => {
   
   const post =  [
                   { 
-                    content : 'content 테스트 0호asdflasdfjlasdjflkasdjflkajsdlfjasdlkfjalsdjfalksdjflaksjdflkajsdfklajsldkfjlaksdjfaklsdjfklajsdlfkjaklsdjflkjzlkxcvzlxkcjvzlkcxvjzlxkcvjzlkcxjvzlkxcjvlzkxcjvlkzxcjvklzxcjvlkzxcjvlkzxcmvlzkcxmvlzkcxmvlzkxcmvlkzxcmvlkzmcvlkzxcmvlkzxmcmzxclvkzcxlk',
+                    content : 'content 테스트 0호 asdflasdfjlas djflkasdjflkaj s dlfjasdlkfjals djfalksdjflaksjdfl k a j s dfklajsldkfjlaksdjfaklsdjfklajsdlfk j   aklsdjflkjzlkxcvzlxkcjvzlkcxvjzlxkcvjzlkcxjvz lkxcjvlzkxcjvlkzxcjvklzxcjvlkzxcjvlkzxcmvlzkcxmvlzkcxmvlzkxcmvlkzxcmvlkzmcvlkzx cmvlkzxmcmzxclvkzcxlk' ,
                   },
                   {
                     content : 'content 테스트 1호',

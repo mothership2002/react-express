@@ -5,6 +5,11 @@ export class ModelArticle {
     regDateTime : string = '';
 }
 
+export class ConditionToggle {
+    postFlag : boolean = false;
+    replyListFlag : boolean = false;
+}
+
 // class ModelPost {
 //     no : number = -1;
 //     title : string = '';
