@@ -19,19 +19,22 @@ router.get('/api/post-all', (req, resp, next) => {
       no: 0,
       title: '기모링',
       regNickName: '호고고',
-      regDateTime: '2022.12.26 10:10:10'
+      regDateTime: '2022.12.26 10:10:10',
+      updateTime: '2022.12.26 10:10:10',
     },
     {
       no: 1,
       title: '기모링1',
       regNickName: '호고고1',
-      regDateTime: '2022.12.26 10:10:10'
+      regDateTime: '2022.12.26 10:10:10',
+      updateTime: '2022.12.26 10:10:10',
     },
     {
       no: 2,
       title: '기모링2',
       regNickName: '호고고2',
-      regDateTime: '2022.12.26 10:10:10'
+      regDateTime: '2022.12.26 10:10:10',
+      updateTime: null,
     },
   ];
   

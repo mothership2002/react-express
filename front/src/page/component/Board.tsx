@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
-import { Accordion, Spinner } from 'react-bootstrap';
+import { Accordion, Button, Spinner } from 'react-bootstrap';
 import Table from 'react-bootstrap/esm/Table';
 import { useNavigate } from 'react-router';
 import { useRecoilState } from 'recoil';
 import { ModelArticle } from '../../class/ModelArticle';
 import { textState } from '../../store/test';
 import { TOGGLE_CONDITION, TYPE_ARTICLE } from '../../type/type';
+import AccountAdd from './AccountAdd';
 
 const Board = () => {
 
@@ -112,16 +113,14 @@ const Board = () => {
 
         setDataList(resJson);
         
-        setConditional((v) => {
-          const a :any = [];
+        setConditional(() => {
+          const a :TOGGLE_CONDITION[] = [];
           for ( let i = 0 ; i < resJson.length ; i++ ) {
-            a.push( { postFlag : false , replyListFlag : false });
+            a.push( { postFlag : false , replyListFlag : false } );
           } 
-          v = a;
-          return v;
+          return a;
         })
       }
-      // resJson.length;
     }) ();
 
     
@@ -170,11 +169,15 @@ const Board = () => {
                         onClick = {() => { toggleModule(index, conditional[index].postFlag, 'content'); }}
                         style = {{ display : 'flex',
                                    justifyContent: 'space-around',
-                                   textAlign : 'center'}}>
+                                   textAlign : 'center',
+                                   minHeight : '65.52px'}}>
                   <div style={{ flex : 1 }}>{item.no}</div>
                   <div style={{ flex : 8 }}>{item.title}</div>
                   <div style={{ flex : 2 }}>{item.regNickName}</div>
-                  <div style={{ flex : 2 }}>{item.regDateTime}</div>
+                  <div style={{ flex : 2 , fontSize : '14px', letterSpacing : '-0.8px'}}>
+                    <div>{item.regDateTime}</div>
+                    <div>{item.updateTime}</div>
+                  </div>
                 </Accordion.Header>
 
                 <Accordion.Body >
@@ -192,37 +195,23 @@ const Board = () => {
                         </Accordion.Header>
                         <Accordion.Body>
                           {item.reply?.map((reply, index) => {
-                            if(reply.replyUpdateDate === null || reply.replyUpdateDate === undefined){
+                            
+                            // if(reply.replyUpdateDate === null || reply.replyUpdateDate === undefined){
                               return (
                                 <div key={index} style={{ display : 'flex',
                                                           fontSize : '13px',
                                                           letterSpacing : '-0.5px',
                                                           marginBottom : '7px'}}>
-                                  <div style={{flex : 3}}>{reply.replyCreater}</div>
-                                  <div style={{flex : 14}}>{reply.replyContent}</div>
-                                  <div style={{flex : 3 , height : '39px'}}>
+                                  <div style={{flex : 2}}>{reply.replyCreater}</div>
+                                  <div style={{flex : 15}}>{reply.replyContent}</div>
+                                  <div style={{flex : 3, height : '39px'}}>
                                     <div>{reply.replyCreateDate}</div>
-                                    <div style={{height : '50%'}}></div>
+                                    <div style={{height : '50%'}}>
+                                      { reply.replyUpdateDate === null || reply.replyUpdateDate === undefined ? '' : reply.replyUpdateDate }
+                                    </div>
                                   </div>
                                 </div>
                               )
-                            }
-
-                            else {
-                              return (
-                                <div key={index} style={{ display : 'flex',
-                                                          fontSize : '13px',
-                                                          letterSpacing : '-0.5px',
-                                                          marginBottom : '7px'}}>
-                                  <div style={{flex : 3}}>{reply.replyCreater}</div>
-                                  <div style={{flex : 14}}>{reply.replyContent}</div>
-                                  <div style={{flex : 3 , height : '39px'}}>
-                                      <div>{reply.replyUpdateDate}</div>
-                                      <div>{reply.replyCreateDate}</div>
-                                  </div>
-                                </div>
-                              )
-                            }
                           })}
                           여기다 댓글 생성창 만들면 되겠네
                         </Accordion.Body>
@@ -249,6 +238,12 @@ const Board = () => {
             <div>게시글</div>
           </Accordion.Header>
           <Accordion.Body>
+            <div style={{marginBottom : '20px', display : 'flex', flexDirection : 'row-reverse'}}>
+              <Button onClick={ (e) => {
+                console.log(e);
+                AccountAdd()
+              } }>새글 쓰기</Button>
+            </div>
             {/* {spinning()} */}
             {articleList()}
           </Accordion.Body>

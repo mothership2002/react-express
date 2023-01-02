@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import Reply from './component/Reply'
-import Post from './component/Post'
+import Reply from './component/test-component/Reply'
+import Post from './component/test-component/Post'
 import { useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { textState } from '../store/test';

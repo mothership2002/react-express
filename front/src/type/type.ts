@@ -3,7 +3,7 @@ export type TYPE_ARTICLE = {
     title : string,
     regNickName : string,
     regDateTime : string,
-    updateDateTime : string,
+    updateTime : string,
     content : string | undefined,
     reply : TYPE_REPLY[] | undefined
             // [
