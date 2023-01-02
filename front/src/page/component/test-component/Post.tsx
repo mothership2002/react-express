@@ -1,6 +1,7 @@
+// 테스트용 컴포넌트
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router';
-import { TYPE_POST } from '../../type/type';
+import { TYPE_POST } from '../../../type/type';
 
 
 export default function Post() {

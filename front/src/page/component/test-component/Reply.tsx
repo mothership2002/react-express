@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Table from 'react-bootstrap/esm/Table';
 import { useParams } from 'react-router-dom';
-import { TYPE_REPLY } from '../../type/type';
+import { TYPE_REPLY } from '../../../type/type';
 import { Button, ButtonGroup } from 'react-bootstrap';
 
 export default function Reply() {
