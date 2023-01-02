@@ -232,8 +232,7 @@ const Board = () => {
                             <div style={{ flex : 2,
                                           display : 'flex',
                                           alignItems: 'center',
-                                          justifyContent: 'space-evenly',
-                                          }}>
+                                          justifyContent: 'space-evenly',}}>
                               <Button>등록하기</Button>
                             </div>
                           </div>
