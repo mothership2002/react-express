@@ -39,7 +39,7 @@ export default function Post() {
       const url = `http://localhost:3001/api/post/${param.no}`
       const result = await fetch(url);
       const resJson = await result.json();
-
+      
       setPost(resJson);
       
     })()

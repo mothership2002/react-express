@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Table from 'react-bootstrap/esm/Table';
 import { useParams } from 'react-router-dom';
 import { TYPE_REPLY } from '../../type/type';
-import { Button } from 'react-bootstrap';
+import { Button, ButtonGroup } from 'react-bootstrap';
 
 export default function Reply() {
   
@@ -22,24 +22,35 @@ export default function Reply() {
     })()
   }, []);
 
+  function updateReply() {
+
+  };
+
+  function deleteReply() {
+
+  }
 
   const reply = () => {
     return replyList.map((item, index) => {
       // if(item.createNo === )
       return (
-        <tr key={index} >
-          <td>{index + 1}</td>
-          <td>{item.replyContent}</td>
-          <td>{item.replyCreater}</td>
-          <td>{item.replyCreateDate}</td>
-          <td>{item.replyUpdateDate}</td>
-          <Button>수정하기</Button>
-          <Button>삭제하기</Button>
-          {/* 
-            <td>{item.createNo}</td>
-            <td>{item.replyNo}</td> 
-          */}
-        </tr>
+        <>
+          <tr key={index} >
+            <td>{index + 1}</td>
+            <td>{item.replyContent}</td>
+            <td>{item.replyCreater}</td>
+            <td>{item.replyCreateDate}</td>
+            <td>{item.replyUpdateDate}</td>
+            <ButtonGroup>
+              <Button >수정하기</Button>
+              <Button >삭제하기</Button>
+            </ButtonGroup>
+            {/* 
+              <td>{item.createNo}</td>
+              <td>{item.replyNo}</td> 
+            */}
+          </tr>
+        </>
       )
     })
   };
@@ -53,6 +64,7 @@ export default function Reply() {
           <th>작성자</th>
           <th>생성일</th>
           <th>수정일</th>
+          <div>새고로침 버튼 </div>
         </tr>
       </thead>
       <tbody>

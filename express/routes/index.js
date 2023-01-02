@@ -43,92 +43,189 @@ router.get('/api/post-all', (req, resp, next) => {
 
 // 상세조회
 router.get('/api/post/:postId',(req, resp, next) => {
-  const selectId = req.params.postId;
+  
+  const post =  [
+                  { 
+                    content : 'content 테스트 0호asdflasdfjlasdjflkasdjflkajsdlfjasdlkfjalsdjfalksdjflaksjdflkajsdfklajsldkfjlaksdjfaklsdjfklajsdlfkjaklsdjflkjzlkxcvzlxkcjvzlkcxvjzlxkcvjzlkcxjvzlkxcjvlzkxcjvlkzxcjvklzxcjvlkzxcjvlkzxcmvlzkcxmvlzkcxmvlzkxcmvlkzxcmvlkzmcvlkzxcmvlkzxmcmzxclvkzcxlk',
+                  },
+                  {
+                    content : 'content 테스트 1호',
+                  },
+                  {
+                    content : 'content 테스트 2호',
+                  },
+                ]
 
-  const post =  { 
-                  no : selectId,
-                  title : 'title',
-                  content : 'content',
-                  regNickname : 'regNickname',
-                  regDateTime : 'regDateTime',
-                  updateDateTime : 'updateDateTime',
-                }
+  const postId = req.params.postId;
 
-  resp.json(post);
+  resp.json(post[postId]);
 });
 
 router.get('/api/reply/:postId', (req, resp, next) => {
-  const replyList =     [
+  const replyList1 =     [
                           { 
                             createNo : '1',
                             replyNo : '0' ,
-                            replyContent : 'reply-content',
+                            replyContent : 'reply-content 1',
                             replyCreater : 'nickname',
-                            replyCreateDate : 'createDate',
-                            replyUpdateDate : 'updateDate',
+                            replyCreateDate : '2023.01.02 18:39:20',
+                            replyUpdateDate : null,
                           },
                           { 
                             createNo : '1',
                             replyNo : '1' ,
                             replyContent : 'reply-content 1',
                             replyCreater : 'nickname 1',
-                            replyCreateDate : 'createDate 1',
-                            replyUpdateDate : 'updateDate 1',
+                            replyCreateDate : '2023.01.02 18:39:20',
+                            replyUpdateDate : '2023.01.03 12:39:20',
                           },
                           { 
                             createNo : '1',
                             replyNo : '2' ,
                             replyContent : 'reply-content 2',
                             replyCreater : 'nickname 2',
-                            replyCreateDate : 'createDate 2',
-                            replyUpdateDate : 'updateDate 2',
+                            replyCreateDate : '2023.01.02 18:39:20',
+                            replyUpdateDate : '2023.01.03 12:39:20',
                           },
                           { 
                             createNo : '1',
                             replyNo : '3' ,
                             replyContent : 'reply-content 2',
                             replyCreater : 'nickname 2',
-                            replyCreateDate : 'createDate 2',
-                            replyUpdateDate : 'updateDate 2',
+                            replyCreateDate : '2023.01.02 18:39:20',
+                            replyUpdateDate : '2023.01.03 12:39:20',
                           },
                           { 
                             createNo : '2',
                             replyNo : '4' ,
                             replyContent : 'reply-content 2',
                             replyCreater : 'nickname 2',
-                            replyCreateDate : 'createDate 2',
-                            replyUpdateDate : 'updateDate 2',
+                            replyCreateDate : '2023.01.02 18:39:20',
+                            replyUpdateDate : '2023.01.03 12:39:20',
+                          },
+                          { 
+                            createNo : '2',
+                            replyNo : '4' ,
+                            replyContent : 'reply-content 2',
+                            replyCreater : 'nickname 2',
+                            replyCreateDate : '2023.01.02 18:39:20',
+                            replyUpdateDate : null,
                           },
                         ]
 
-                      // { replyList : 
-                      //   [ 
-                      //     { 
-                      //       createNo : '1',
-                      //       replyNo : '0' ,
-                      //       replyContent : 'reply-content',
-                      //       replyCreater : 'nickname',
-                      //       replyCreateDate : 'createDate',
-                      //       replyUpdateDate : 'updateDate',
-                      //     },
-                      //     { 
-                      //       createNo : '1',
-                      //       replyNo : '1' ,
-                      //       replyContent : 'reply-content 1',
-                      //       replyCreater : 'nickname 1',
-                      //       replyCreateDate : 'createDate 1',
-                      //       replyUpdateDate : 'updateDate 1',
-                      //     },
-                      //     { 
-                      //       createNo : '1',
-                      //       replyNo : '2' ,
-                      //       replyContent : 'reply-content 2',
-                      //       replyCreater : 'nickname 2',
-                      //       replyCreateDate : 'createDate 2',
-                      //       replyUpdateDate : 'updateDate 2',
-                      //     },
-                      //   ]
-                      // }
+  const replyList2 =     [
+                          { 
+                            createNo : '1',
+                            replyNo : '0' ,
+                            replyContent : '두번째 게시글 테스트',
+                            replyCreater : 'nickname',
+                            replyCreateDate : '2023.01.03 12:39:20',
+                            replyUpdateDate : null,
+                          },
+                          { 
+                            createNo : '1',
+                            replyNo : '1' ,
+                            replyContent : '두번째 게시글 테스트',
+                            replyCreater : 'nickname 1',
+                            replyCreateDate : '2023.01.03 12:39:20',
+                            replyUpdateDate : null,
+                          },
+                          { 
+                            createNo : '1',
+                            replyNo : '2' ,
+                            replyContent : '두번째 게시글 테스트',
+                            replyCreater : 'nickname 2',
+                            replyCreateDate : '2023.01.03 12:39:20',
+                            replyUpdateDate : null,
+                          },
+                          { 
+                            createNo : '1',
+                            replyNo : '3' ,
+                            replyContent : '두번째 게시글 테스트',
+                            replyCreater : 'nickname 2',
+                            replyCreateDate : '2023.01.03 12:39:20',
+                            replyUpdateDate : null,
+                          },
+                          { 
+                            createNo : '2',
+                            replyNo : '4' ,
+                            replyContent : '두번째 게시글 테스트',
+                            replyCreater : 'nickname 2',
+                            replyCreateDate : '2023.01.03 12:39:20',
+                            replyUpdateDate : null,
+                          },
+                          { 
+                            createNo : '2',
+                            replyNo : '4' ,
+                            replyContent : '두번째 게시글 테스트',
+                            replyCreater : 'nickname 2',
+                            replyCreateDate : '2023.01.03 12:39:20',
+                            replyUpdateDate : null,
+                          },
+                        ]
+                        
+  const replyList3 =     [
+                          { 
+                            createNo : '1',
+                            replyNo : '0' ,
+                            replyContent : '세번째 게시글 테스트',
+                            replyCreater : 'nickname',
+                            replyCreateDate : '2023.01.03 12:39:20',
+                            replyUpdateDate : null,
+                          },
+                          { 
+                            createNo : '1',
+                            replyNo : '1' ,
+                            replyContent : '세번째 게시글 테스트',
+                            replyCreater : 'nickname 1',
+                            replyCreateDate : '2023.01.03 12:39:20',
+                            replyUpdateDate : null,
+                          },
+                          { 
+                            createNo : '1',
+                            replyNo : '2' ,
+                            replyContent : '세번째 게시글 테스트',
+                            replyCreater : 'nickname 2',
+                            replyCreateDate : '2023.01.03 12:39:20',
+                            replyUpdateDate : null,
+                          },
+                          { 
+                            createNo : '1',
+                            replyNo : '3' ,
+                            replyContent : '세번째 게시글 테스트',
+                            replyCreater : 'nickname 2',
+                            replyCreateDate : '2023.01.03 12:39:20',
+                            replyUpdateDate : null,
+                          },
+                          { 
+                            createNo : '2',
+                            replyNo : '4' ,
+                            replyContent : '세번째 게시글 테스트',
+                            replyCreater : 'nickname 2',
+                            replyCreateDate : '2023.01.03 12:39:20',
+                            replyUpdateDate : null,
+                          },
+                          { 
+                            createNo : '2',
+                            replyNo : '4' ,
+                            replyContent : '세번째 게시글 테스트',
+                            replyCreater : 'nickname 2',
+                            replyCreateDate : '2023.01.03 12:39:20',
+                            replyUpdateDate : null,
+                          },
+                        ]  
+                      
+
+  const param = parseInt(req.params.postId);
+  let replyList = null;
+
+  switch(param){
+    case 0 : replyList = replyList1;
+      break;
+    case 1 : replyList = replyList2
+      break;
+    case 2 : replyList = replyList3
+  }
 
   resp.json(replyList);
 });
