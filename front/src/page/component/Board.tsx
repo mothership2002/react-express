@@ -204,16 +204,39 @@ const Board = () => {
                                                           marginBottom : '7px'}}>
                                   <div style={{flex : 2}}>{reply.replyCreater}</div>
                                   <div style={{flex : 15}}>{reply.replyContent}</div>
-                                  <div style={{flex : 3, height : '39px'}}>
-                                    <div>{reply.replyCreateDate}</div>
-                                    <div style={{height : '50%'}}>
-                                      { reply.replyUpdateDate === null || reply.replyUpdateDate === undefined ? '' : reply.replyUpdateDate }
+                                  <div style={{flex : 3, height : '39px',display : 'flex' , justifyContent: 'space-between',}}>
+                                    <div >
+                                      <div >{reply.replyCreateDate}</div>
+                                      <div style={{height : '50%'}}>
+                                        { reply.replyUpdateDate === null || reply.replyUpdateDate === undefined ? '' : reply.replyUpdateDate }
+                                      </div>
+                                    </div>
+                                    <div className='delete-container' style={{display : 'flex', alignItems: 'center'}}>
+                                      {true === true ? <Button >삭제</Button> : ''}
                                     </div>
                                   </div>
                                 </div>
                               )
                           })}
-                          여기다 댓글 생성창 만들면 되겠네
+                          <div style={{ display : 'flex',
+                                        fontSize : '13px',
+                                        letterSpacing : '-0.5px',
+                                        marginBottom : '7px',
+                                        height : '72px'}}>
+                            <div style={{flex : 2}}>닉네임 들어가고</div>
+                            <textarea style={{flex : 16, 
+                                              padding : '5px',
+                                              resize: 'none',
+                                              maxLines: 3,
+                                              }}></textarea>
+                            <div style={{ flex : 2,
+                                          display : 'flex',
+                                          alignItems: 'center',
+                                          justifyContent: 'space-evenly',
+                                          }}>
+                              <Button>등록하기</Button>
+                            </div>
+                          </div>
                         </Accordion.Body>
                       </Accordion.Item> 
                     </Accordion>
@@ -254,3 +277,4 @@ const Board = () => {
 };
 
 export default Board;
+
