@@ -2,48 +2,8 @@ const { application, json } = require('express');
 var express = require('express');
 var router = express.Router();
 
-const fs = require('fs')
-const sql = [];
-
-fs.readFile('./sql/sql.json',(err, data) => {
-  if (err) {
-    console.error(err)
-    return
-  }
-  sql.push(JSON.parse(data));
-})
-
-// setTimeout(() => {
-//   // console.log(sql);
-//   // console.log(sql[0].postAll);
-//   let selectSql;
-//   for(let a in sql[0].postAll) {
-//     selectSql += ;
-//     console.log(a);
-//   }
-// }, 2000);
-
-
-// 디비 커넥트 라이브러리
-const { Client }  = require('pg');
-const Query = require('pg').Query;
-
-// 디비 커넥트
-var client = new Client({
-  user : 'board',
-  host : 'localhost',
-  database : 'board',
-  password : 'board',
-  port : 5432,
-})
-
-client.connect(err => {
-  if (err) {
-    console.error('connect error', err.stack)
-  } else {
-  	console.log('success to connect!')
-  }
-});
+const sql = require('../module/sql');
+const conn = require('../module/connection');
 
 /* GET home page. */
 router.get('/', function(req, resp, next) {
@@ -57,48 +17,16 @@ router.get('/index', function(req, resp, next) {
 });
 
 // 전체조회
-router.get('/api/post-all/:page?', (req, resp, next) => {
+router.get('/api/post-all/:page?', async (req, resp, next) => {
+  const res = await conn.getRowResult(sql.postPage(req.params.page, 10));
 
-  // 페이지 관련
-  let page;
-  if(req.params.page === '0') {
-    page = '1';
+  if (res) {
+    resp.json(res);
   }
   else {
-    page = req.params.page;
+    resp.json('err');
   }
-
-  let selectSql = "";
-  const sqlClass = sql[0].postAll;
-  
-  for(let a of sqlClass) {
-    selectSql += a;
-  }
-
-  const query = new Query( selectSql )
-
-  client.query(query);
-
-  var rows = [];
-
-  query.on('row', row => {
-    rows.push(row);
-  });
-
-  query.on('end', () => {
-    resp.json(rows);
-    resp.status(200).end();
-  });
-
-  query.on('error', err => {
-    console.log(err.statk);
-    resp.send('DB error')
-    resp.status(500);
-  })
-
 });
-
-
 
 // 상세조회
 router.get('/api/post/:postId',(req, resp, next) => {
