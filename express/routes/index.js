@@ -5,7 +5,7 @@ var router = express.Router();
 const fs = require('fs')
 const sql = [];
 
-fs.readFile('./sql/test.json',(err, data) => {
+fs.readFile('./sql/sql.json',(err, data) => {
   if (err) {
     console.error(err)
     return
