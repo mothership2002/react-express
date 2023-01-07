@@ -109,7 +109,7 @@ const Board = () => {
           };
         });
         const resJson = await res.json();
-        console.log(resJson);
+
         if (resJson !== null || resJson !== undefined) {
   
           setDataList(resJson);
@@ -169,7 +169,7 @@ const Board = () => {
     return dataList.map((item, index) => {
       return (
             /* 게시글 정보 / 미디어 함수? */
-            <div style={{marginBottom : '12px'}}>
+            <div style={{marginBottom : '12px'}} key={index}>
               <Accordion key={index} className='post-container' >
                 <Accordion.Item eventKey={String(index)}>
                   {/* 뚝뚝 끊기는 느낌이 남아 있음. */}
