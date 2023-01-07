@@ -1,5 +1,28 @@
+const { application, json } = require('express');
 var express = require('express');
 var router = express.Router();
+
+const fs = require('fs')
+const sql = [];
+
+fs.readFile('./sql/test.json',(err, data) => {
+  if (err) {
+    console.error(err)
+    return
+  }
+  sql.push(JSON.parse(data));
+})
+
+// setTimeout(() => {
+//   // console.log(sql);
+//   // console.log(sql[0].postAll);
+//   let selectSql;
+//   for(let a in sql[0].postAll) {
+//     selectSql += ;
+//     console.log(a);
+//   }
+// }, 2000);
+
 
 // 디비 커넥트 라이브러리
 const { Client }  = require('pg');
@@ -34,37 +57,26 @@ router.get('/index', function(req, resp, next) {
 });
 
 // 전체조회
-router.get('/api/post-all', (req, resp, next) => {
-  // const result = [
-  //   {
-  //     no: 0,
-  //     title: '제목0',
-  //     regNickName: '호고고',
-  //     regDateTime: '2022.12.26 10:10:10',
-  //     updateTime: '2022.12.26 10:10:10',
-  //   },
-  //   {
-  //     no: 1,
-  //     title: '제목1',
-  //     regNickName: '호고고1',
-  //     regDateTime: '2022.12.26 10:10:10',
-  //     updateTime: '2022.12.26 10:10:10',
-  //   },
-  //   {
-  //     no: 2,
-  //     title: '제목2',
-  //     regNickName: '호고고2',
-  //     regDateTime: '2022.12.26 10:10:10',
-  //     updateTime: null,
-  //   },
-  // ];
+router.get('/api/post-all/:page?', (req, resp, next) => {
 
-  const query = new Query(
-    `select board_no, board_title, create_date, update_date, member_id
-     from board b
-     join member m on (m.member_no = b.member_no)`
-    )
-    
+  // 페이지 관련
+  let page;
+  if(req.params.page === '0') {
+    page = '1';
+  }
+  else {
+    page = req.params.page;
+  }
+
+  let selectSql = "";
+  const sqlClass = sql[0].postAll;
+  
+  for(let a of sqlClass) {
+    selectSql += a;
+  }
+
+  const query = new Query( selectSql )
+
   client.query(query);
 
   var rows = [];
