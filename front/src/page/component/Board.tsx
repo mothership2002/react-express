@@ -59,7 +59,7 @@ const Board = () => {
     const resJson = await result.json();
 
     let copiedDataList = [...dataList];
-    copiedDataList[postNo].content = resJson.content;
+    copiedDataList[postNo].board_content = resJson.board_content;
     
     setDataList(copiedDataList);
 
@@ -94,11 +94,9 @@ const Board = () => {
     )
   }
 
-  useEffect(() => {
-
-    // 게시글 전체 조회
-    (async () => {
-      const res = await fetch('http://localhost:3001/api/post-all').catch(e => {
+  // 게시글 목록 조회
+  async function reFresh() {
+    const res = await fetch('http://localhost:3001/api/post-all').catch(e => {
       console.log('error catch');
       alert('데이터 조회에 실패 했습니다.');
       return {
@@ -108,7 +106,7 @@ const Board = () => {
         };
       });
       const resJson = await res.json();
-      
+      console.log(resJson);
       if (resJson !== null || resJson !== undefined) {
 
         setDataList(resJson);
@@ -121,9 +119,12 @@ const Board = () => {
           return a;
         })
       }
-    }) ();
+  }
+
+  useEffect(() => {
 
     
+    reFresh()
 
     // fetch('https://example.com/profile', {
     // method: 'POST', // or 'PUT'
@@ -162,7 +163,7 @@ const Board = () => {
     return dataList.map((item, index) => {
       return (
             /* 게시글 정보 / 미디어 함수? */
-            <Accordion key={index} className='post-container' >
+            <Accordion key={index} className='post-container'>
               <Accordion.Item eventKey={String(index)}>
                 {/* 뚝뚝 끊기는 느낌이 남아 있음. */}
                 <Accordion.Header 
@@ -171,19 +172,21 @@ const Board = () => {
                                    justifyContent: 'space-around',
                                    textAlign : 'center',
                                    minHeight : '65.52px'}}>
-                  <div style={{ flex : 1 }}>{item.no}</div>
-                  <div style={{ flex : 8 }}>{item.title}</div>
-                  <div style={{ flex : 2 }}>{item.regNickName}</div>
+                  <div style={{ flex : 1 }}>{item.board_no}</div>
+                  <div style={{ flex : 8 }}>{item.board_title}</div>
+                  <div style={{ flex : 2 }}>{item.member_id}</div>
                   <div style={{ flex : 2 , fontSize : '14px', letterSpacing : '-0.8px'}}>
-                    <div>{item.regDateTime}</div>
-                    <div>{item.updateTime}</div>
+                    <div>{item.create_date}</div>
+                    <div>{item.update_date}</div>
                   </div>
                 </Accordion.Header>
 
                 <Accordion.Body >
 
                   {/* 게시글 내용 영역 */}
-                  {item?.content}
+                  <div style={{minHeight:'500px'}} >
+                    {item?.board_content}
+                  </div>
                   {/* 게시글 내용 영역 끝 */}
 
                   {/* 댓글영역 */}
@@ -193,7 +196,7 @@ const Board = () => {
                         <Accordion.Header onClick={() => toggleModule(index, conditional[index].replyListFlag, 'reply')}>
                           댓글
                         </Accordion.Header>
-                        <Accordion.Body>
+                        <Accordion.Body style={{minHeight:'300px'}}>
                           {item.reply?.map((reply, index) => {
                             
                             // if(reply.replyUpdateDate === null || reply.replyUpdateDate === undefined){
@@ -256,7 +259,9 @@ const Board = () => {
       {/* {text} */}
       <Accordion defaultActiveKey='0'>
         <Accordion.Item eventKey='0'>
-          <Accordion.Header>
+          <Accordion.Header onClick={ () => {
+            reFresh()
+          }}>
             <div>게시글</div>
           </Accordion.Header>
           <Accordion.Body>

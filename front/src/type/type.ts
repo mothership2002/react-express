@@ -1,10 +1,10 @@
 export type TYPE_ARTICLE = {
-    no : number,
-    title : string,
-    regNickName : string,
-    regDateTime : string,
-    updateTime : string,
-    content : string | undefined,
+    board_no : number,
+    board_title : string,
+    member_id : string,
+    create_date : string,
+    update_date : string,
+    board_content : string | undefined,
     reply : TYPE_REPLY[] | undefined
             // [
             //   {

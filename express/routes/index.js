@@ -1,6 +1,27 @@
 var express = require('express');
 var router = express.Router();
 
+// 디비 커넥트 라이브러리
+const { Client }  = require('pg');
+const Query = require('pg').Query;
+
+// 디비 커넥트
+var client = new Client({
+  user : 'board',
+  host : 'localhost',
+  database : 'board',
+  password : 'board',
+  port : 5432,
+})
+
+client.connect(err => {
+  if (err) {
+    console.error('connect error', err.stack)
+  } else {
+  	console.log('success to connect!')
+  }
+});
+
 /* GET home page. */
 router.get('/', function(req, resp, next) {
   resp.render('index', { title: 'Express' });
@@ -14,32 +35,55 @@ router.get('/index', function(req, resp, next) {
 
 // 전체조회
 router.get('/api/post-all', (req, resp, next) => {
-  const result = [
-    {
-      no: 0,
-      title: '기모링',
-      regNickName: '호고고',
-      regDateTime: '2022.12.26 10:10:10',
-      updateTime: '2022.12.26 10:10:10',
-    },
-    {
-      no: 1,
-      title: '기모링1',
-      regNickName: '호고고1',
-      regDateTime: '2022.12.26 10:10:10',
-      updateTime: '2022.12.26 10:10:10',
-    },
-    {
-      no: 2,
-      title: '기모링2',
-      regNickName: '호고고2',
-      regDateTime: '2022.12.26 10:10:10',
-      updateTime: null,
-    },
-  ];
-  
-  resp.json(result);
-  // res.send(result);
+  // const result = [
+  //   {
+  //     no: 0,
+  //     title: '제목0',
+  //     regNickName: '호고고',
+  //     regDateTime: '2022.12.26 10:10:10',
+  //     updateTime: '2022.12.26 10:10:10',
+  //   },
+  //   {
+  //     no: 1,
+  //     title: '제목1',
+  //     regNickName: '호고고1',
+  //     regDateTime: '2022.12.26 10:10:10',
+  //     updateTime: '2022.12.26 10:10:10',
+  //   },
+  //   {
+  //     no: 2,
+  //     title: '제목2',
+  //     regNickName: '호고고2',
+  //     regDateTime: '2022.12.26 10:10:10',
+  //     updateTime: null,
+  //   },
+  // ];
+
+  const query = new Query(
+    `select board_no, board_title, create_date, update_date, member_id
+     from board b
+     join member m on (m.member_no = b.member_no)`
+    )
+    
+  client.query(query);
+
+  var rows = [];
+
+  query.on('row', row => {
+    rows.push(row);
+  });
+
+  query.on('end', () => {
+    resp.json(rows);
+    resp.status(200).end();
+  });
+
+  query.on('error', err => {
+    console.log(err.statk);
+    resp.send('DB error')
+    resp.status(500);
+  })
+
 });
 
 
@@ -49,7 +93,7 @@ router.get('/api/post/:postId',(req, resp, next) => {
   
   const post =  [
                   { 
-                    content : 'content 테스트 0호 asdflasdfjlas djflkasdjflkaj s dlfjasdlkfjals djfalksdjflaksjdfl k a j s dfklajsldkfjlaksdjfaklsdjfklajsdlfk j   aklsdjflkjzlkxcvzlxkcjvzlkcxvjzlxkcvjzlkcxjvz lkxcjvlzkxcjvlkzxcjvklzxcjvlkzxcjvlkzxcmvlzkcxmvlzkcxmvlzkxcmvlkzxcmvlkzmcvlkzx cmvlkzxmcmzxclvkzcxlk' ,
+                    content : 'content 테스트 0호' ,
                   },
                   {
                     content : 'content 테스트 1호',
