@@ -12,13 +12,16 @@ import { reFresh, selectDetail, selectReply } from './module/async';
 import { toggle } from './module/toggle';
 
 const Board = () => {
-
+  
   const navigate = useNavigate();
-
+  // 포스트 리스트
   const [dataList, setDataList] = useState<TYPE_ARTICLE[]>([]);
-
+  
+  // 페이지
   const [page, setPage] = useState<number>(1);
-
+  
+  // 토글용 새로고침
+  const [ reFreshCondition, setReFreshCondition ] = useState<boolean>(true);
   const [ conditional , setConditional ] = useState<TOGGLE_CONDITION[]>([]);
 
   function toggleModule(postNo:number, flag:boolean, object:string, index:number) {
@@ -48,13 +51,6 @@ const Board = () => {
 
     setDataList(await selectDetail(postNo, dataList));
     
-    // 변화 감지 불가 ( 객체에 매핑이 되어있지 않아서?)
-    // setDataList((dataList) => {
-    //   dataList[postNo].content = resJson.content;
-    //   console.log(dataList[postNo].content);
-    //   setDataList(dataList);
-    //   return dataList;
-    // });
   }
 
   // 댓글 조회
@@ -62,7 +58,7 @@ const Board = () => {
     setDataList(await selectReply(postNo, dataList));
   }
 
-  //
+  // 어케써야하지
   function spinning() {
     return (
       <Spinner animation="border" role="status">
@@ -70,8 +66,6 @@ const Board = () => {
       </Spinner>
     )
   }
-
-  const [ reFreshCondition, setReFreshCondition ] = useState<boolean>(true);
 
   // 게시글 목록 조회
   async function getSelectPost() {

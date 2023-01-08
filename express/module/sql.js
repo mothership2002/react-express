@@ -13,8 +13,18 @@ module.exports = {
     return `
       SELECT board_content
       FROM BOARD
-      WHERE BOARD_NO = ${postNo}`
+      WHERE BOARD_NO = ${postNo}
+      `;
   },
 
-  selectReply: `select`,
+  selectReply: (postNo, currentPage, pagePostSize ) => {
+    return `
+      SELECT * 
+      FROM REPLY 
+      WHERE BOARD_NO = ${postNo}
+      ORDER BY REPLY_NO
+      LIMIT ${pageReplySize} OFFSET ${(currentPage - 1) * pagePostSize}
+      `;
+  },
+
 }
