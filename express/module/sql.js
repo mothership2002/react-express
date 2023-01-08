@@ -1,11 +1,5 @@
 module.exports = {
-  // postAll: () => {
-  //   return `
-  //     select board_no, board_title, create_date, update_date, member_id
-  //     from board b
-  //     join member m on (m.member_no = b.member_no)
-  //   `;
-  // },
+
   postPage: (currentPage, pagePostSize) => {
     return `
       SELECT board_no, board_title, create_date, update_date, member_id

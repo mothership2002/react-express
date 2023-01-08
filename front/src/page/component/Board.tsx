@@ -8,6 +8,8 @@ import { ModelArticle } from '../../class/ModelArticle';
 import { textState } from '../../store/test';
 import { TOGGLE_CONDITION, TYPE_ARTICLE } from '../../type/type';
 import AccountAdd from './AccountAdd';
+import { reFresh, selectDetail, selectReply } from './module/async';
+import { toggle } from './module/toggle';
 
 const Board = () => {
 
@@ -26,18 +28,14 @@ const Board = () => {
     if( object === 'content') {
 
       // 게시글 토글
-      if ( flag !== true ) selectPost(postNo);
-      const temp = copiedFlag[index].postFlag;
-      copiedFlag[index].postFlag = !temp;
-  
+      if ( flag !== true ) getSelectDetail(postNo);
+      toggle(copiedFlag, flag, 'content', index);
     } 
     else if ( object === 'reply' ) {
 
       // 댓글 토글
-      if ( flag !== true ) selectReply(index);
-  
-      const temp = copiedFlag[index].replyListFlag;
-      copiedFlag[index].replyListFlag = !temp;
+      if ( flag !== true ) getSelectReply(postNo);
+      toggle(copiedFlag, flag, 'reply', index);
       
     }
 
@@ -46,21 +44,9 @@ const Board = () => {
   }
 
   // 게시글 상세 조회
-  async function selectPost(postNo :number) {
+  async function getSelectDetail(postNo :number) {
 
-    const url = `http://localhost:3001/api/post/${postNo}`
-    const result = await fetch(url);
-    const resJson = await result.json();
- 
-    let copiedDataList = [...dataList];
-
-    for(let a of copiedDataList) {
-      if(a.board_no == postNo){
-        a.board_content = resJson.rows[0].board_content;
-      }
-    }
-    
-    setDataList(copiedDataList);
+    setDataList(await selectDetail(postNo, dataList));
     
     // 변화 감지 불가 ( 객체에 매핑이 되어있지 않아서?)
     // setDataList((dataList) => {
@@ -72,16 +58,8 @@ const Board = () => {
   }
 
   // 댓글 조회
-  async function selectReply(postNo:number) {
-    
-    const url = `http://localhost:3001/api/reply/${postNo}`;
-    const result = await fetch(url);
-    const resJson = await result.json();
-
-    let copiedDataList = [...dataList];
-    copiedDataList[postNo].reply = resJson;
-
-    setDataList(copiedDataList);
+  async function getSelectReply(postNo:number) {
+    setDataList(await selectReply(postNo, dataList));
   }
 
   //
@@ -96,27 +74,18 @@ const Board = () => {
   const [ reFreshCondition, setReFreshCondition ] = useState<boolean>(true);
 
   // 게시글 목록 조회
-  async function reFresh() {
+  async function getSelectPost() {
     if(reFreshCondition) {
-      const res = await fetch(`http://localhost:3001/api/post-all/${page}`).catch(e => {
-        console.log('error catch');
-        alert('데이터 조회에 실패 했습니다.');
-        return {
-            json: () => {
-              return undefined;
-            }
-          };
-        });
-        
-        const resJson = await res.json();
+
+        const resJson = await reFresh(page)
 
         if (resJson !== null || resJson !== undefined) {
           
-          setDataList(resJson.rows);
+          setDataList(resJson);
           
           setConditional(() => {
             const a :TOGGLE_CONDITION[] = [];
-            for ( let i = 0 ; i < resJson.rows.length ; i++ ) {
+            for ( let i = 0 ; i < resJson.length ; i++ ) {
               a.push( { postFlag : false , replyListFlag : false } );
             } 
             return a;
@@ -130,7 +99,7 @@ const Board = () => {
   useEffect(() => {
 
     
-    reFresh()
+    getSelectPost()
 
     // fetch('https://example.com/profile', {
     // method: 'POST', // or 'PUT'
@@ -200,7 +169,7 @@ const Board = () => {
                     <div style={{marginTop : '20px'}}>
                       <Accordion key={index} className='reply-container' >
                         <Accordion.Item eventKey='0'>
-                          <Accordion.Header onClick={() => toggleModule(index, conditional[index].replyListFlag, 'reply', index)}>
+                          <Accordion.Header onClick={() => toggleModule(item.board_no, conditional[index].replyListFlag, 'reply', index)}>
                             댓글
                           </Accordion.Header>
                           <Accordion.Body style={{minHeight:'300px', margin : '12px'}}>
@@ -268,7 +237,7 @@ const Board = () => {
       <Accordion defaultActiveKey='0'>
         <Accordion.Item eventKey='0'>
           <Accordion.Header onClick={ () => {
-            reFresh();
+            getSelectPost();
           }}>
             <div>게시글</div>
           </Accordion.Header>

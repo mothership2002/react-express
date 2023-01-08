@@ -33,8 +33,7 @@ module.exports = {
     const res = await pool.query(query).catch(e => {
       console.log(e);
     });
-
-    return res;
+    return res.rows;
     // if (res.rows) {
     //   return res.rows;
     // }
