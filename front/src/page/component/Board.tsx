@@ -1,3 +1,4 @@
+import { log } from 'console';
 import { useEffect, useState } from 'react'
 import { Accordion, Button, Spinner } from 'react-bootstrap';
 import Table from 'react-bootstrap/esm/Table';
@@ -13,18 +14,12 @@ const Board = () => {
   const navigate = useNavigate();
 
   const [dataList, setDataList] = useState<TYPE_ARTICLE[]>([]);
-  
-  // const [test, setTest] = useState<number>(0);
-  
-  // const [text, setText] = useRecoilState(textState);
 
-  // useEffect(() => {
-  //   console.log("1");
-  // }, [test])
+  const [page, setPage] = useState<number>(1);
 
   const [ conditional , setConditional ] = useState<TOGGLE_CONDITION[]>([]);
 
-  function toggleModule(postNo:number, flag:boolean, object:string) {
+  function toggleModule(postNo:number, flag:boolean, object:string, index:number) {
     
     let copiedFlag = [...conditional];
 
@@ -32,18 +27,17 @@ const Board = () => {
 
       // 게시글 토글
       if ( flag !== true ) selectPost(postNo);
-  
-      const temp = copiedFlag[postNo].postFlag;
-      copiedFlag[postNo].postFlag = !temp;
+      const temp = copiedFlag[index].postFlag;
+      copiedFlag[index].postFlag = !temp;
   
     } 
     else if ( object === 'reply' ) {
 
       // 댓글 토글
-      if ( flag !== true ) selectReply(postNo);
+      if ( flag !== true ) selectReply(index);
   
-      const temp = copiedFlag[postNo].replyListFlag;
-      copiedFlag[postNo].replyListFlag = !temp;
+      const temp = copiedFlag[index].replyListFlag;
+      copiedFlag[index].replyListFlag = !temp;
       
     }
 
@@ -57,12 +51,17 @@ const Board = () => {
     const url = `http://localhost:3001/api/post/${postNo}`
     const result = await fetch(url);
     const resJson = await result.json();
-
+ 
     let copiedDataList = [...dataList];
-    copiedDataList[postNo].board_content = resJson.board_content;
+
+    for(let a of copiedDataList) {
+      if(a.board_no == postNo){
+        a.board_content = resJson.rows[0].board_content;
+      }
+    }
     
     setDataList(copiedDataList);
-
+    
     // 변화 감지 불가 ( 객체에 매핑이 되어있지 않아서?)
     // setDataList((dataList) => {
     //   dataList[postNo].content = resJson.content;
@@ -99,7 +98,7 @@ const Board = () => {
   // 게시글 목록 조회
   async function reFresh() {
     if(reFreshCondition) {
-      const res = await fetch('http://localhost:3001/api/post-all').catch(e => {
+      const res = await fetch(`http://localhost:3001/api/post-all/${page}`).catch(e => {
         console.log('error catch');
         alert('데이터 조회에 실패 했습니다.');
         return {
@@ -108,15 +107,16 @@ const Board = () => {
             }
           };
         });
+        
         const resJson = await res.json();
 
         if (resJson !== null || resJson !== undefined) {
-  
-          setDataList(resJson);
+          
+          setDataList(resJson.rows);
           
           setConditional(() => {
             const a :TOGGLE_CONDITION[] = [];
-            for ( let i = 0 ; i < resJson.length ; i++ ) {
+            for ( let i = 0 ; i < resJson.rows.length ; i++ ) {
               a.push( { postFlag : false , replyListFlag : false } );
             } 
             return a;
@@ -174,7 +174,7 @@ const Board = () => {
                 <Accordion.Item eventKey={String(index)}>
                   {/* 뚝뚝 끊기는 느낌이 남아 있음. */}
                   <Accordion.Header 
-                          onClick = {() => { toggleModule(index, conditional[index].postFlag, 'content'); }}
+                          onClick = {() => { toggleModule(item.board_no, conditional[index].postFlag, 'content', index); }}
                           style = {{ display : 'flex',
                                      justifyContent: 'space-around',
                                      textAlign : 'center',
@@ -200,7 +200,7 @@ const Board = () => {
                     <div style={{marginTop : '20px'}}>
                       <Accordion key={index} className='reply-container' >
                         <Accordion.Item eventKey='0'>
-                          <Accordion.Header onClick={() => toggleModule(index, conditional[index].replyListFlag, 'reply')}>
+                          <Accordion.Header onClick={() => toggleModule(index, conditional[index].replyListFlag, 'reply', index)}>
                             댓글
                           </Accordion.Header>
                           <Accordion.Body style={{minHeight:'300px', margin : '12px'}}>
@@ -268,7 +268,7 @@ const Board = () => {
       <Accordion defaultActiveKey='0'>
         <Accordion.Item eventKey='0'>
           <Accordion.Header onClick={ () => {
-            reFresh()
+            reFresh();
           }}>
             <div>게시글</div>
           </Accordion.Header>

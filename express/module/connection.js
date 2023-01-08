@@ -20,6 +20,7 @@ module.exports = {
 
       await pool.connect();
     }
+    console.log('connection');
   },
   getRowResult: async (query) => {
     // const client = new Pool(dbConfig);
@@ -28,16 +29,17 @@ module.exports = {
     //   console.log(e);
     // });
     // await client.end();
-
+    
     const res = await pool.query(query).catch(e => {
       console.log(e);
     });
 
-    if (res.rows) {
-      return res.rows;
-    }
-    else {
-      return undefined;
-    }
+    return res;
+    // if (res.rows) {
+    //   return res.rows;
+    // }
+    // else {
+    //   return undefined;
+    // }
   },
 };

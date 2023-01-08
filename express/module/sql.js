@@ -6,11 +6,7 @@ module.exports = {
   //     join member m on (m.member_no = b.member_no)
   //   `;
   // },
-  postPage: ({
-    // startPostNo,
-    currentPage,
-    pagePostSize,
-  }) => {
+  postPage: (currentPage, pagePostSize) => {
     return `
       SELECT board_no, board_title, create_date, update_date, member_id
       FROM board b
@@ -19,6 +15,12 @@ module.exports = {
       LIMIT ${pagePostSize} OFFSET ${(currentPage - 1) * pagePostSize}
     `;
   },
-  selectConent: `select board_content`,
+  selectConent: (postNo) => {
+    return `
+      SELECT board_content
+      FROM BOARD
+      WHERE BOARD_NO = ${postNo}`
+  },
+
   selectReply: `select`,
 }

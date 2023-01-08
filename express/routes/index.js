@@ -18,9 +18,10 @@ router.get('/index', function(req, resp, next) {
 
 // 전체조회
 router.get('/api/post-all/:page?', async (req, resp, next) => {
+  
   const res = await conn.getRowResult(sql.postPage(req.params.page, 10));
 
-  if (res) {
+  if (res !== null || res !== undefined) {
     resp.json(res);
   }
   else {
@@ -29,23 +30,16 @@ router.get('/api/post-all/:page?', async (req, resp, next) => {
 });
 
 // 상세조회
-router.get('/api/post/:postId',(req, resp, next) => {
+router.get('/api/post/:postId', async (req, resp, next) => {
   
-  const post =  [
-                  { 
-                    content : 'content 테스트 0호' ,
-                  },
-                  {
-                    content : 'content 테스트 1호',
-                  },
-                  {
-                    content : 'content 테스트 2호',
-                  },
-                ]
+  const res = await conn.getRowResult(sql.selectConent(req.params.postId));
 
-  const postId = req.params.postId;
-
-  resp.json(post[postId]);
+  if (res !== null || res !== undefined) {
+    resp.json(res);
+  }
+  else {
+    resp.json('err');
+  }
 });
 
 router.get('/api/reply/:postId', (req, resp, next) => {
