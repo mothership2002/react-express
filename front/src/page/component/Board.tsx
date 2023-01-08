@@ -1,3 +1,4 @@
+import { isDisabled } from '@testing-library/user-event/dist/utils';
 import { log } from 'console';
 import { useEffect, useState } from 'react'
 import { Accordion, Button, Spinner } from 'react-bootstrap';
@@ -83,23 +84,25 @@ const Board = () => {
             for ( let i = 0 ; i < resJson.length ; i++ ) {
               a.push( { postFlag : false , replyListFlag : false } );
             } 
-            setLoading(!loading);
+            // setTimeout(() => {
+            //   setLoading(!loading);
+            // }, 1000);
             return a;
           })
         }
       }
     }
     else {
-      setTimeout(() => {
-        setLoading(!loading);
-      }, 200) // 이건 사용자가 장난치면 고장남 아 머어케해야하지
+      // setTimeout(() => {
+      //   setLoading(!loading);
+      // }, 200);
     }
+   
     setReFreshCondition(!reFreshCondition);
   }
 
   useEffect(() => {
 
-    
     getSelectPost()
 
     // fetch('https://example.com/profile', {
@@ -143,7 +146,7 @@ const Board = () => {
               <div style={{marginBottom : '12px'}} key={index}>
                 <Accordion key={index} className='post-container' >
                   <Accordion.Item eventKey={String(index)}>
-                    {/* 뚝뚝 끊기는 느낌이 남아 있음. */}
+
                     <Accordion.Header 
                             onClick = {() => { toggleModule(item.board_no, conditional[index].postFlag, 'content', index); }}
                             style = {{ display : 'flex',
@@ -176,8 +179,6 @@ const Board = () => {
                             </Accordion.Header>
                             <Accordion.Body style={{minHeight:'300px', margin : '12px'}}>
                               {item.reply?.map((reply, index) => {
-                                
-                                // if(reply.replyUpdateDate === null || reply.replyUpdateDate === undefined){
                                   return (
                                     <div key={index} style={{ display : 'flex',
                                                               fontSize : '13px',
@@ -253,12 +254,12 @@ const Board = () => {
           </Accordion.Header>
           <Accordion.Body style={{minHeight : '800px'}}>
             <div style={{marginBottom : '20px', display : 'flex', flexDirection : 'row-reverse'}}>
-              <Button onClick={ (e) => {
-                console.log(e);
-                AccountAdd()
+              <Button onClick={ () => {
+                // postAdd()
               } }>새글 쓰기</Button>
             </div>
-            {loading ? spinning() : articleList()}
+            {/* {loading ? spinning() : */}
+             {articleList()}
           </Accordion.Body>
         </Accordion.Item>
       </Accordion>

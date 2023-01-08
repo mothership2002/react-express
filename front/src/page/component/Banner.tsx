@@ -1,18 +1,35 @@
 import React, { Component } from 'react'
 import { Button } from 'react-bootstrap'
 
-const logSession = null;
-export class Banner extends Component {
-  render() {
+const loginSession = null;
+
+const bannerButton = (loginSession:any) => {
+  console.log(loginSession !== null);
+  if(loginSession !== null || loginSession !== undefined) {
     return (
-      <div style={{ display :'flex', 
-                    justifyContent : 'space-between',
-                    margin : '12px'}}>
-        <div>게시판</div>
-        {logSession === null ? <Button>로그인 판단여부</Button> : <Button>내 정보</Button>}
-      </div>
+      <Button>내 정보</Button>
+    )
+  }
+  else {
+    return (
+      <>
+        <Button>로그인</Button>
+        <Button>회원가입</Button>
+      </>
     )
   }
 }
+
+const Banner = () => {
+  return (
+    <div style={{ display :'flex', 
+                  justifyContent : 'space-between',
+                  margin : '12px'}}>
+      <div>게시판</div>
+      {bannerButton(loginSession)}
+    </div>
+  )
+}
+
 
 export default Banner
