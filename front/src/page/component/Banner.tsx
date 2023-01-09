@@ -1,26 +1,27 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import { Button } from 'react-bootstrap'
 
-const loginSession = null;
+let loginSession:any = null;
 
-const bannerButton = (loginSession:any) => {
-  console.log(loginSession !== null);
-  if(loginSession !== null || loginSession !== undefined) {
-    return (
-      <Button>내 정보</Button>
-    )
-  }
-  else {
-    return (
-      <>
-        <Button>로그인</Button>
-        <Button>회원가입</Button>
-      </>
-    )
-  }
-}
 
 const Banner = () => {
+  const [toggle, setToggle] = useState<boolean>(false);
+  
+  const bannerButton = (loginSession:any) => {
+    if(loginSession !== null) {
+      return (
+        <Button>내 정보</Button>
+        )
+      }
+      else {
+        return (
+          <Button onClick={ () => {
+            setToggle(!toggle);
+          }}>로그인</Button>
+        )
+      }
+  }
+
   return (
     <div style={{ display :'flex', 
                   justifyContent : 'space-between',

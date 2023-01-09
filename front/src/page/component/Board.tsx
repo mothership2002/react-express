@@ -7,10 +7,10 @@ import { useNavigate } from 'react-router';
 import { useRecoilState } from 'recoil';
 import { ModelArticle } from '../../class/ModelArticle';
 import { textState } from '../../store/test';
-import { TOGGLE_CONDITION, TYPE_ARTICLE } from '../../type/type';
+import { TYPE_ARTICLE } from '../../type/type';
 import AccountAdd from './AccountAdd';
 import { reFresh, selectDetail, selectReply } from './module/async';
-import { toggle } from './module/toggle';
+// import { toggle } from './module/toggle';
 
 const Board = () => {
 
@@ -25,29 +25,6 @@ const Board = () => {
 
   // 토글용 새로고침
   const [reFreshCondition, setReFreshCondition] = useState<boolean>(true);
-  const [conditional, setConditional] = useState<TOGGLE_CONDITION[]>([]);
-
-  // function toggleModule(postNo: number, flag: boolean, object: string, index: number) {
-
-  //   let copiedFlag = [...conditional];
-
-  //   if (object === 'content') {
-
-  //     // 게시글 토글
-  //     if (flag !== true) getSelectDetail(postNo);
-  //     toggle(copiedFlag, flag, 'content', index);
-  //   }
-  //   else if (object === 'reply') {
-
-  //     // 댓글 토글
-  //     if (flag !== true) getSelectReply(postNo);
-  //     toggle(copiedFlag, flag, 'reply', index);
-
-  //   }
-
-  //   setConditional(copiedFlag);
-
-  // }
 
   // 게시글 상세 조회
   async function getSelectDetail(postNo: number) {
@@ -76,34 +53,24 @@ const Board = () => {
     if (reFreshCondition) {
       // 조회 가능시점 (로딩 노출)
       setLoading(true);
-      const resJson: TYPE_ARTICLE[] = await reFresh(page);
-      if (resJson) {
-        resJson.map((item, index) => {
-          item.contentOpen = false;
-          item.replyOpen = false;
-          return item;
-        });
-        // console.log(resJson);
-        setDataList(resJson);
-      }
+      const resJson = await reFresh(page);
+      setDataList(resJson);
       // 동기 로직 후 로딩 해제
-
     }
-
     setLoading(false);
     setReFreshCondition(!reFreshCondition);
   }
 
   // //과도한 조회 방지 ??
-  const disablebutton = (target: Element, dataList: TYPE_ARTICLE[]) => {
-    const buttonElemental = target;
-    if (dataList) {
-      buttonElemental.setAttribute('disabled', 'true');
-    }
-    setTimeout(() => {
-      buttonElemental.removeAttribute('disabled');
-    }, 1000);
-  }
+  // const disablebutton = (target: Element, dataList: TYPE_ARTICLE[]) => {
+  //   const buttonElemental = target;
+  //   if (dataList) {
+  //     buttonElemental.setAttribute('disabled', 'true');
+  //   }
+  //   setTimeout(() => {
+  //     buttonElemental.removeAttribute('disabled');
+  //   }, 1000);
+  // }
 
   useEffect(() => {
 
@@ -147,23 +114,47 @@ const Board = () => {
       return (
         <>
           <div style={{minHeight : '500px'}}>
-            {dataList[index].board_content}
+            {dataList[index].board_content !== undefined ? dataList[index].board_content : spinning()}
           </div>
           < div style={{ marginTop: '20px' }}>
             <Accordion key={index} className='reply-container' >
               <Accordion.Item eventKey='0'>
                 <Accordion.Header onClick={async () => {
                   // TODO CHANGE REPLY OPEN STATUS
-                  // const result = getSelectReply(cloneList[index].board_no);
                   const result = await selectReply(dataList[index].board_no, dataList);
-                                  
-                  // cloneList[index].reply = result.reply;
                   result[index].replyOpen = !dataList[index].replyOpen;
                   setDataList(result);
                 }}>
                   댓글
                 </Accordion.Header>
-                {Reply(index)}
+                <Accordion.Body style={{ minHeight: '300px', margin: '12px' }}>
+
+                  {dataList[index].reply !== undefined ? Reply(index) : spinning()}
+
+                  <div style={{
+                    display: 'flex',
+                    fontSize: '13px',
+                    letterSpacing: '-0.5px',
+                    marginBottom: '7px',
+                    height: '72px'
+                  }}>
+                    <div style={{ flex: 2 }}>닉네임 들어가고</div>
+                    <textarea style={{
+                      flex: 16,
+                      padding: '5px',
+                      resize: 'none',
+                      maxLines: 3,
+                    }}></textarea>
+                    <div style={{
+                      flex: 2,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-evenly',
+                    }}>
+                      <Button>등록하기</Button>
+                    </div>
+                  </div>
+                </Accordion.Body>
               </Accordion.Item>
             </Accordion>
           </div >
@@ -175,55 +166,30 @@ const Board = () => {
   const Reply = (index: number) => {
     if (dataList[index].replyOpen) {
       return (
-        <Accordion.Body style={{ minHeight: '300px', margin: '12px' }}>
-          {dataList[index].reply?.map((reply, index) => {
-            return (
-              <div key={index} style={{
-                display: 'flex',
-                fontSize: '13px',
-                letterSpacing: '-0.5px',
-                marginBottom: '7px'
-              }}>
-                <div style={{ flex: 2 }}>{reply.replyCreater}</div>
-                <div style={{ flex: 15 }}>{reply.replyContent}</div>
-                <div style={{ flex: 3, height: '39px', display: 'flex', justifyContent: 'space-between', }}>
-                  <div >
-                    <div >{reply.replyCreateDate}</div>
-                    <div style={{ height: '50%' }}>
-                      {reply.replyUpdateDate === null || reply.replyUpdateDate === undefined ? '' : reply.replyUpdateDate}
-                    </div>
-                  </div>
-                  <div className='delete-container' style={{ display: 'flex', alignItems: 'center' }}>
-                    {true === true ? <Button >삭제</Button> : ''}
+        dataList[index].reply?.map((reply, index) => {
+          return (
+            <div key={index} style={{
+              display: 'flex',
+              fontSize: '13px',
+              letterSpacing: '-0.5px',
+              marginBottom: '7px'
+            }}>
+              <div style={{ flex: 2 }}>{reply.replyCreater}</div>
+              <div style={{ flex: 15 }}>{reply.replyContent}</div>
+              <div style={{ flex: 3, height: '39px', display: 'flex', justifyContent: 'space-between', }}>
+                <div >
+                  <div >{reply.replyCreateDate}</div>
+                  <div style={{ height: '50%' }}>
+                    {reply.replyUpdateDate === null || reply.replyUpdateDate === undefined ? '' : reply.replyUpdateDate}
                   </div>
                 </div>
+                <div className='delete-container' style={{ display: 'flex', alignItems: 'center' }}>
+                  {true === true ? <Button >삭제</Button> : ''}
+                </div>
               </div>
-            )
-          })}
-          <div style={{
-            display: 'flex',
-            fontSize: '13px',
-            letterSpacing: '-0.5px',
-            marginBottom: '7px',
-            height: '72px'
-          }}>
-            <div style={{ flex: 2 }}>닉네임 들어가고</div>
-            <textarea style={{
-              flex: 16,
-              padding: '5px',
-              resize: 'none',
-              maxLines: 3,
-            }}></textarea>
-            <div style={{
-              flex: 2,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-evenly',
-            }}>
-              <Button>등록하기</Button>
             </div>
-          </div>
-        </Accordion.Body>
+          )
+        })
       )
     }
   }

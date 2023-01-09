@@ -21,10 +21,10 @@ export type TYPE_ARTICLE = {
             // ]
 };
 
-export type TOGGLE_CONDITION = {
-  postFlag : boolean,
-  replyListFlag : boolean,
-}
+// export type TOGGLE_CONDITION = {
+//   postFlag : boolean,
+//   replyListFlag : boolean,
+// }
 
 // export type REPLY_CONDITI
 // }

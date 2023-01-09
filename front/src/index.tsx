@@ -6,6 +6,7 @@ import { router } from './router/router';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/css/bootstrap.css';
 import { RecoilRoot } from 'recoil';
+import {CookiesProvider} from 'react-cookie'
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -13,9 +14,11 @@ const root = ReactDOM.createRoot(
 
 root.render(
   // <React.StrictMode>
-  <RecoilRoot>
-    <RouterProvider router = {router}></RouterProvider>
-  </RecoilRoot>
+  <CookiesProvider>
+    <RecoilRoot>
+      <RouterProvider router = {router}></RouterProvider>
+    </RecoilRoot>
+  </CookiesProvider>
   // </React.StrictMode>
 );
 
