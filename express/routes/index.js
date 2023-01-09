@@ -201,11 +201,11 @@ router.get('/api/reply/:postId', (req, resp, next) => {
   let replyList = null;
 
   switch(param){
-    case 0 : replyList = replyList1;
+    case 1 : replyList = replyList1;
       break;
-    case 1 : replyList = replyList2
+    case 2 : replyList = replyList2
       break;
-    case 2 : replyList = replyList3
+    case 3 : replyList = replyList3
   }
 
   resp.json(replyList);

@@ -5,6 +5,8 @@ export type TYPE_ARTICLE = {
     create_date : string,
     update_date : string,
     board_content : string | undefined,
+    contentOpen : boolean,
+    replyOpen: boolean,
     reply : TYPE_REPLY[] | undefined
             // [
             //   {
