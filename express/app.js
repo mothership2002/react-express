@@ -1,7 +1,6 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
-var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
 
@@ -19,7 +18,6 @@ app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
@@ -41,21 +39,33 @@ app.use(function(err, req, res, next) {
 });
 
 
+var session = require('express-session');
+var cookieParser = require('cookie-parser');
+
 var conn = require('./module/connection');
+const sql = require('./module/sql');
 conn.connectionPoolInit();
 
-app.use(cookieParser(process.env.COOKIE_SECRET));
-app.use(session({
-  secure: ture,	                        // https 환경에서만 session 정보를 주고받도록처리
-  secret: process.env.COOKIE_SECRET,    // 암호화하는 데 쓰일 키
-  resave: false,                        // 세션을 언제나 저장할지 설정함
-  saveUninitialized: true,              // 세션에 저장할 내역이 없더라도 처음부터 세션을 생성할지 설정
-  cookie: {	                            //세션 쿠키 설정 (세션 관리 시 클라이언트에 보내는 쿠키)
-    httpOnly: true,                     // 자바스크립트를 통해 세션 쿠키를 사용할 수 없도록 함
-    Secure: true
-  },
-  name: 'session-cookie'                // 세션 쿠키명 디폴트값은 connect.sid이지만 다른 이름을 줄수도 있다.
-}));
+// app.use(cookieParser(process.env.COOKIE_SECRET));
+// app.use(session({
+//   secure: ture,	                        // https 환경에서만 session 정보를 주고받도록처리
+//   secret: process.env.COOKIE_SECRET,    // 암호화하는 데 쓰일 키
+//   resave: false,                        // 세션을 언제나 저장할지 설정함
+//   saveUninitialized: true,              // 세션에 저장할 내역이 없더라도 처음부터 세션을 생성할지 설정
+//   cookie: {	                            //세션 쿠키 설정 (세션 관리 시 클라이언트에 보내는 쿠키)
+//     httpOnly: true,                     // 자바스크립트를 통해 세션 쿠키를 사용할 수 없도록 함
+//     Secure: true
+//   },
+//   name: 'session-cookie'                // 세션 쿠키명 디폴트값은 connect.sid이지만 다른 이름을 줄수도 있다.
+// }));
+
+
+// app.use('/api/post-all/:page?', async (req, resp, next) => {
+//   console.log(1);
+//   const count = await conn.getRowResult(sql.selectPostCount());
+//   console.log(count);
+//   next();
+// }); 앱레벨 
 
 
 module.exports = app;

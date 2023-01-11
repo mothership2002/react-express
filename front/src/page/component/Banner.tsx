@@ -1,5 +1,6 @@
-import React, { Component, useState } from 'react'
+import { useState } from 'react'
 import { Button } from 'react-bootstrap'
+import LoginPage from '../LoginPage';
 
 let loginSession:any = null;
 
@@ -28,6 +29,7 @@ const Banner = () => {
                   margin : '12px'}}>
       <div>게시판</div>
       {bannerButton(loginSession)}
+      {toggle ? LoginPage() : <></>}
     </div>
   )
 }

@@ -27,4 +27,11 @@ module.exports = {
       `;
   },
 
+  selectPostCount: () => {
+    return `
+      SELECT COUNT(*)
+      FROM BOARD
+    `
+  }
+
 }

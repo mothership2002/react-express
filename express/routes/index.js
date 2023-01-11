@@ -4,11 +4,12 @@ var router = express.Router();
 
 const sql = require('../module/sql');
 const conn = require('../module/connection');
+const app = require('../app');
 
 /* GET home page. */
-router.get('/', function(req, resp, next) {
-  resp.render('index', { title: 'Express' });
-  resp.json('aaaa');
+router.use(function (req, res, next) {
+  console.log('Time:', Date());
+  next();
 });
 
 // 테스트
@@ -17,17 +18,33 @@ router.get('/index', function(req, resp, next) {
 });
 
 // 전체조회
+router.use('/api/post-all/:page?', function(req, res, next) {
+  console.log('Request URL:', req.originalUrl);
+  next();
+}, function (req, res, next) {
+  console.log('Request Type:', req.method);
+  next();
+})
+
 router.get('/api/post-all/:page?', async (req, resp, next) => {
   
-  const res = await conn.getRowResult(sql.postPage(req.params.page, 10));
+  const postCount = await conn.getRowResult(sql.selectPostCount());
+  const postList = await conn.getRowResult(sql.postPage(req.params.page, 10));
 
-  if (res !== null || res !== undefined) {
-    resp.json(res);
+  if (postList !== null || postList !== undefined) {
+
+    const selectPost =  { 
+                          postCount,
+                          'postList' : postList,
+                        }
+
+    resp.json(selectPost);
   }
   else {
     resp.json('err');
   }
 });
+
 
 // 상세조회
 router.get('/api/post/:postId', async (req, resp, next) => {

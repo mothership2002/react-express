@@ -1,28 +1,21 @@
-import { isDisabled } from '@testing-library/user-event/dist/utils';
-import { log } from 'console';
 import { useEffect, useState } from 'react'
-import { Accordion, Button, Spinner, useAccordionButton } from 'react-bootstrap';
-import Table from 'react-bootstrap/esm/Table';
-import { useNavigate } from 'react-router';
-import { useRecoilState } from 'recoil';
-import { ModelArticle } from '../../class/ModelArticle';
-import { textState } from '../../store/test';
+import style from '../../assets/css/board.module.css';
+import { Accordion, Button, Pagination, Spinner } from 'react-bootstrap';
 import { TYPE_ARTICLE } from '../../type/type';
-import AccountAdd from './AccountAdd';
-import { reFresh, selectDetail, selectReply } from './module/async';
-// import { toggle } from './module/toggle';
+import { reFresh, selectDetail, selectReply } from '../../module/async';
 
 const Board = () => {
 
-  const navigate = useNavigate();
   // 포스트 리스트
   const [dataList, setDataList] = useState<TYPE_ARTICLE[]>([]);
 
   // 페이지
-  const [page, setPage] = useState<number>(1);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [maxPage, setMaxPage] = useState<number>(0);
+  const [minPage, setMinPage] = useState<number>(0);
 
   const [loading, setLoading] = useState<boolean>(true);
-
+  
   // 토글용 새로고침
   const [reFreshCondition, setReFreshCondition] = useState<boolean>(true);
 
@@ -36,30 +29,78 @@ const Board = () => {
   async function getSelectReply(postNo: number) {
     setDataList(await selectReply(postNo, dataList));
   }
-
-
-  function spinning() {
-    return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '500px' }}>
-        <Spinner animation="border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </Spinner>
-      </div>
-    )
-  }
-
+  
   // 게시글 목록 조회
   async function getSelectPost() {
     if (reFreshCondition) {
       // 조회 가능시점 (로딩 노출)
       setLoading(true);
-      const resJson = await reFresh(page);
-      setDataList(resJson);
-      // 동기 로직 후 로딩 해제
+      const resJson = await reFresh(currentPage);
+      if(resJson !== undefined){
+        setDataList(resJson.postList);
+        setMaxPage(Math.ceil(resJson.postCount[0].count / 10 ));
+      }
+      setMinPage(1);
     }
+    // 동기 로직 후 로딩 해제
     setLoading(false);
     setReFreshCondition(!reFreshCondition);
   }
+
+
+  function Spinning() {
+    return (
+      <div className={style.spinnerContainer}>
+        <Spinner animation='border' role='status'/>
+        <span>Loading...</span>
+      </div>
+    )
+  }
+
+  function PageContainer() {
+    
+    let items = [];
+    if(maxPage - minPage < 5) {
+      for(let i = 1 ; i <= maxPage; i++) {
+        items.push(
+          <Pagination.Item key={i} onClick={() => {
+            if(i !== currentPage){
+              setCurrentPage(i);
+              getSelectPost();
+            }
+          }} active={i === currentPage}>{i}</Pagination.Item>
+        )
+      }
+    }
+    else { 
+      for(let i = currentPage ; i <= maxPage ; i++){
+        items.push(
+          <Pagination.Item key={i} onClick={() => {
+            if(i !== currentPage){
+              setCurrentPage(i);
+              getSelectPost();
+            }
+          }} active={i === currentPage}>{i}</Pagination.Item>
+        )
+      }
+    }
+
+
+    return (
+      <Pagination className={style.pagenation}>
+        <Pagination.First />
+        <Pagination.Prev />
+        {/* <Pagination.Item>{minPage}</Pagination.Item> */}
+        
+        {items}
+        {/* <Pagination.Ellipsis />  */}
+        {/* <Pagination.Item>{maxPage}</Pagination.Item>  */}
+        <Pagination.Next />
+        <Pagination.Last />
+      </Pagination>
+    );
+  }
+
 
   // //과도한 조회 방지 ??
   // const disablebutton = (target: Element, dataList: TYPE_ARTICLE[]) => {
@@ -113,44 +154,27 @@ const Board = () => {
     if (dataList[index].contentOpen) {
       return (
         <>
-          <div style={{minHeight : '500px'}}>
-            {dataList[index].board_content !== undefined ? dataList[index].board_content : spinning()}
+          <div className={style.boardBody}>
+            {dataList[index].board_content !== undefined ? dataList[index].board_content : Spinning()}
           </div>
           < div style={{ marginTop: '20px' }}>
-            <Accordion key={index} className='reply-container' >
+            <Accordion key={index} >
               <Accordion.Item eventKey='0'>
                 <Accordion.Header onClick={async () => {
                   // TODO CHANGE REPLY OPEN STATUS
-                  const result = await selectReply(dataList[index].board_no, dataList);
-                  result[index].replyOpen = !dataList[index].replyOpen;
-                  setDataList(result);
+                  await getSelectReply(dataList[index].board_no);
+                  dataList[index].replyOpen = !dataList[index].replyOpen;
                 }}>
                   댓글
                 </Accordion.Header>
-                <Accordion.Body style={{ minHeight: '300px', margin: '12px' }}>
+                <Accordion.Body className={style.replyArea}>
 
-                  {dataList[index].reply !== undefined ? Reply(index) : spinning()}
-
-                  <div style={{
-                    display: 'flex',
-                    fontSize: '13px',
-                    letterSpacing: '-0.5px',
-                    marginBottom: '7px',
-                    height: '72px'
-                  }}>
+                  {dataList[index].reply !== undefined ? Reply(index) : Spinning()}
+                  
+                  <div className={style.replyInsertArea}>
                     <div style={{ flex: 2 }}>닉네임 들어가고</div>
-                    <textarea style={{
-                      flex: 16,
-                      padding: '5px',
-                      resize: 'none',
-                      maxLines: 3,
-                    }}></textarea>
-                    <div style={{
-                      flex: 2,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-evenly',
-                    }}>
+                    <textarea className={style.replyContentArea}></textarea>
+                    <div className={style.replyBtnArea}>
                       <Button>등록하기</Button>
                     </div>
                   </div>
@@ -168,22 +192,17 @@ const Board = () => {
       return (
         dataList[index].reply?.map((reply, index) => {
           return (
-            <div key={index} style={{
-              display: 'flex',
-              fontSize: '13px',
-              letterSpacing: '-0.5px',
-              marginBottom: '7px'
-            }}>
+            <div key={index} className={style.replyDetailContainer}>
               <div style={{ flex: 2 }}>{reply.replyCreater}</div>
               <div style={{ flex: 15 }}>{reply.replyContent}</div>
-              <div style={{ flex: 3, height: '39px', display: 'flex', justifyContent: 'space-between', }}>
+              <div className={style.replyDateContainer}>
                 <div >
                   <div >{reply.replyCreateDate}</div>
                   <div style={{ height: '50%' }}>
                     {reply.replyUpdateDate === null || reply.replyUpdateDate === undefined ? '' : reply.replyUpdateDate}
                   </div>
                 </div>
-                <div className='delete-container' style={{ display: 'flex', alignItems: 'center' }}>
+                <div className={style.replyDeleteBtn} >
                   {true === true ? <Button >삭제</Button> : ''}
                 </div>
               </div>
@@ -195,13 +214,13 @@ const Board = () => {
   }
 
   // map돌릴때 key 값 설정
-  const articleList = () => {
-    if (dataList.length > 0) {
+  const ArticleList = () => {
+    if (dataList !== undefined && dataList.length > 0) {
       return dataList.map((item, index) => {
         return (
           /* 게시글 정보 */
-          <div style={{ marginBottom: '12px' }} key={index}>
-            <Accordion key={index} className='post-container' >
+          <div className={style.item} key={index}>
+            <Accordion key={index} >
               <Accordion.Item eventKey={String(index)}>
 
                 <Accordion.Header
@@ -210,12 +229,8 @@ const Board = () => {
                     getSelectDetail(item.board_no);
                     item.contentOpen = !item.contentOpen;
                   }}
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-around',
-                    textAlign: 'center',
-                    minHeight: '65.52px'
-                  }}>
+                  className={style.contentBtn}>
+
                   <div style={{ flex: 1 }}>{item.board_no}</div>
                   <div style={{ flex: 8 }}>{item.board_title}</div>
                   <div style={{ flex: 2 }}>{item.member_id}</div>
@@ -225,7 +240,7 @@ const Board = () => {
                   </div>
                 </Accordion.Header>
 
-                <Accordion.Body style={{minHeight : '500px'}}>
+                <Accordion.Body className={style.boardBody}>
                   {Article(index)}
                 </Accordion.Body>
 
@@ -238,7 +253,7 @@ const Board = () => {
     }
     else {
       return (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '500px' }}>
+        <div className={style.spinnerContainer}>
           게시글이 없습니다.
         </div>
       )
@@ -248,18 +263,25 @@ const Board = () => {
   const ListBody = () => {
     if (!loading) {
       return (
-        <Accordion.Body style={{ minHeight: '800px' }}>
-          <div style={{ marginBottom: '20px', display: 'flex', flexDirection: 'row-reverse' }}>
-            <Button onClick={() => {
-              // postAdd()
-            }}>새글 쓰기</Button>
-          </div>
-          {articleList()}
-        </Accordion.Body>
+        <>
+          <Accordion.Body className={style.boardMain}>
+            <div>
+              <div className={style.btnArea}>
+                <Button onClick={() => {
+                  // postAdd()
+                }}>새글 쓰기</Button>
+              </div>
+              {ArticleList()}
+            </div>
+            <div>
+              {dataList !== undefined && dataList.length > 0 ? PageContainer() : <></>}
+            </div>
+          </Accordion.Body>
+        </>
       )
     }
     else {
-      return spinning();
+      return Spinning();
     }
   }
 
@@ -274,6 +296,7 @@ const Board = () => {
             <div>게시글</div>
           </Accordion.Header >
           {ListBody()}
+
         </Accordion.Item>
       </Accordion>
     </>

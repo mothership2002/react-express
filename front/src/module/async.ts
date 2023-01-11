@@ -1,4 +1,4 @@
-import { TYPE_ARTICLE } from "../../../type/type";
+import { TYPE_ARTICLE } from "../type/type";
 
 const errorCatch = (e:any) => {
     console.log('error catch');
@@ -14,7 +14,7 @@ const getResult = (dataList:TYPE_ARTICLE[], postNo:number, resJson:any, flag:str
     let copiedDataList = [...dataList];
     
     for(let a of copiedDataList) {
-      if(a.board_no == postNo){
+      if(a.board_no === postNo){
         if(flag === 'content'){
             a.board_content = resJson[0].board_content;
         }
@@ -23,6 +23,7 @@ const getResult = (dataList:TYPE_ARTICLE[], postNo:number, resJson:any, flag:str
         }
       }
     }
+    
     return copiedDataList;
 }
 
@@ -32,9 +33,9 @@ const reFresh = async (page:number) => {
         errorCatch(e)
     );
     const resJson = await result.json()
-
-    if (resJson) {
-        resJson.map((item:TYPE_ARTICLE, index:any) => {
+    
+    if (resJson !== undefined) {       
+        resJson.postList.map((item:TYPE_ARTICLE, index:any) => {
             item.contentOpen = false;
             item.replyOpen = false;
             return item;

@@ -1,9 +1,9 @@
 import ReactDOM from 'react-dom/client';
+import './assets/css/board.module.css';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { RouterProvider } from 'react-router';
 import { router } from './router/router';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/css/bootstrap.css';
 import { RecoilRoot } from 'recoil';
 import {CookiesProvider} from 'react-cookie'
