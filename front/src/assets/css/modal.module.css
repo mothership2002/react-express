@@ -6,7 +6,7 @@
     left: 0;
     z-index: 19;
     background-color: rgba(0, 0, 0, 0.6);
-    
+    transition: all 0.2s ease-out;
   }
 
 .modal:hover {
@@ -24,7 +24,6 @@
   left: 50%;
   transform: translate(-50%, -50%);
 
-  background-color: rgb(231, 229, 229);
-  border: 1px solid black;
+  background-color: rgb(255,255,255);
   border-radius: 8px;
 }

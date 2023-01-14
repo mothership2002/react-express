@@ -15,7 +15,6 @@ const LoginPage = () => {
         <div className={styles.container} onClick={(e)=>{
           e.stopPropagation();
         }}>
-            
         </div>
       </div>
     );
