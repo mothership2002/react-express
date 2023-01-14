@@ -188,7 +188,7 @@ const Board = () => {
                     <div style={{ flex: 2 }}>닉네임 들어가고</div>
                     <textarea className={style.replyContentArea}></textarea>
                     <div className={style.replyBtnArea}>
-                      <Button>등록하기</Button>
+                      <Button variant="secondary">등록하기</Button>
                     </div>
                   </div>
                 </Accordion.Body>
@@ -282,7 +282,7 @@ const Board = () => {
               <div className={style.btnArea}>
                 <Button onClick={() => {
                   // postAdd()
-                }}>새글 쓰기</Button>
+                }}variant="outline-dark">새글 쓰기</Button>
               </div>
               {ArticleList()}
             </div>

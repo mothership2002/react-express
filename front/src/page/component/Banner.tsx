@@ -20,7 +20,7 @@ const Banner = () => {
         return (
           <Button onClick={ () => {
             setToggle(!toggle);
-          }}>로그인</Button>
+          }} variant="outline-dark">로그인</Button>
         )
       }
   }
