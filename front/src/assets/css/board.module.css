@@ -47,13 +47,11 @@
 }
 
 .replyInsertArea {
-    
     display: flex;
     font-size: 13px;
     letter-spacing: -0.5px;
     margin-bottom: 7px;
     height: 72px;
-     
 }
 
 .replyArea {
@@ -80,7 +78,28 @@
     justify-content: space-between;
 }
 
-.pagenation {
+.pagination {
     display: flex;
     justify-content: center;
+}
+
+.page-link {
+    color: #000; 
+    background-color: #fff;
+    border: 1px solid #ccc; 
+  }
+  
+.page-item.active .page-link {
+    z-index: 1;
+    color: #555;
+    font-weight:bold;
+    background-color: #f1f1f1;
+    border-color: #ccc;
+
+}
+
+.page-link:focus, .page-link:hover {
+    color: #000;
+    background-color: #fafafa; 
+    border-color: #ccc;
 }

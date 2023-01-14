@@ -29,7 +29,7 @@ const Banner = () => {
                   margin : '12px'}}>
       <div>게시판</div>
       {bannerButton(loginSession)}
-      {toggle ? LoginPage() : <></>}
+      {toggle ? LoginPage(toggle) : <></>}
     </div>
   )
 }

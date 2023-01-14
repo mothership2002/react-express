@@ -1,10 +1,14 @@
-import React from 'react'
-import '../assets/css/modal.css';
+import React from 'react';
+import styles from '../assets/css/modal.module.css';
 
-const LoginPage = () => {
+const LoginPage = (toggle:boolean) => {
   return (
-    <div >LoginPage</div>
-  )
+    <div className={styles.modal}>
+      <div className={styles.container}>
+          
+      </div>
+    </div>
+);
 }
 
 export default LoginPage

@@ -60,34 +60,47 @@ const Board = () => {
   function PageContainer() {
     
     let items = [];
-    if(maxPage - minPage < 5) {
-      for(let i = 1 ; i <= maxPage; i++) {
-        items.push(
-          <Pagination.Item key={i} onClick={() => {
-            if(i !== currentPage){
-              setCurrentPage(i);
-              getSelectPost();
-            }
-          }} active={i === currentPage}>{i}</Pagination.Item>
-        )
-      }
-    }
-    else { 
-      for(let i = currentPage ; i <= maxPage ; i++){
-        items.push(
-          <Pagination.Item key={i} onClick={() => {
-            if(i !== currentPage){
-              setCurrentPage(i);
-              getSelectPost();
-            }
-          }} active={i === currentPage}>{i}</Pagination.Item>
-        )
-      }
+    // if(maxPage - minPage < 5) {
+    //   for(let i = 1 ; i <= maxPage; i++) {
+    //     items.push(
+    //       <Pagination.Item key={i} onClick={() => {
+    //         if(i !== currentPage){
+    //           setCurrentPage(i);
+    //           getSelectPost();
+    //         }
+    //       }} active={i === currentPage}>{i}</Pagination.Item>
+    //     )
+    //   }
+    // }
+    // else { 
+    //   for(let i = currentPage ; i <= maxPage ; i++){
+    //     items.push(
+    //       <Pagination.Item key={i} onClick={() => {
+    //         if(i !== currentPage){
+    //           setCurrentPage(i);
+    //           getSelectPost();
+    //         }
+    //       }} active={i === currentPage}>{i}</Pagination.Item>
+    //     )
+    //   }
+    // }
+    
+    // 더미 넣고 생각ㄱ
+    for(let i = 1 ; i <= maxPage; i++){
+      items.push(
+        <Pagination.Item key={i} 
+            onClick={() => {
+                  if(i !== currentPage){
+                    setCurrentPage(i);
+                    getSelectPost();
+                  }
+        }}  active={i === currentPage}>{i}</Pagination.Item>
+      )
     }
 
 
     return (
-      <Pagination className={style.pagenation}>
+      <Pagination className={style.pagination}>
         <Pagination.First />
         <Pagination.Prev />
         {/* <Pagination.Item>{minPage}</Pagination.Item> */}
@@ -296,7 +309,6 @@ const Board = () => {
             <div>게시글</div>
           </Accordion.Header >
           {ListBody()}
-
         </Accordion.Item>
       </Accordion>
     </>
