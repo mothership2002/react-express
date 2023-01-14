@@ -1,13 +1,15 @@
 import { useState } from 'react'
 import { Button } from 'react-bootstrap'
+import { useRecoilState } from 'recoil';
+import { toggleState } from '../../store/toggle';
 import LoginPage from '../LoginPage';
 
 let loginSession:any = null;
 
-
 const Banner = () => {
-  const [toggle, setToggle] = useState<boolean>(false);
   
+  const [toggle , setToggle] = useRecoilState<boolean>(toggleState)
+
   const bannerButton = (loginSession:any) => {
     if(loginSession !== null) {
       return (
@@ -29,7 +31,7 @@ const Banner = () => {
                   margin : '12px'}}>
       <div>게시판</div>
       {bannerButton(loginSession)}
-      {toggle ? LoginPage(toggle) : <></>}
+      {LoginPage()}
     </div>
   )
 }

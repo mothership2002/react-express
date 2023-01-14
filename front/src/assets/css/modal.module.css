@@ -4,12 +4,15 @@
     right: 0;
     bottom: 0;
     left: 0;
-    z-index: 99;
+    z-index: 19;
     background-color: rgba(0, 0, 0, 0.6);
     
   }
 
-  /* 모달창을 화면 중앙. 최상단에 노출 */
+.modal:hover {
+  cursor: pointer;
+}
+
 .container {
   width: 500px;
   height: 500px;
