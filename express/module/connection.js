@@ -29,7 +29,6 @@ module.exports = {
     //   console.log(e);
     // });
     // await client.end();
-    
     const res = await pool.query(query).catch(e => {
       console.log(e);
     });

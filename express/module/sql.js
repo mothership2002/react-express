@@ -32,6 +32,15 @@ module.exports = {
       SELECT COUNT(*)
       FROM BOARD
     `
+  },
+
+  userLogin: (userId, password) => {
+    return `
+      SELECT member_no
+      FROM MEMBER
+      WHERE MEMBER_ID = '${userId}'
+      AND PASSWORD = '${password}'
+    `
   }
 
 }

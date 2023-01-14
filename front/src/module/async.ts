@@ -1,3 +1,4 @@
+import { METHODS } from "http";
 import { TYPE_ARTICLE } from "../type/type";
 
 const errorCatch = (e:any) => {
@@ -76,5 +77,24 @@ const selectDetail = async (postNo:number, dataList:TYPE_ARTICLE[]) => {
     // });
 }
 
+const selectAccount = async (userId:string, password:string) => {
 
-export {reFresh, selectReply, selectDetail};
+    const setting = {
+        method : 'Post',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({'userId': userId, 'password': password}),
+    }
+
+    const url = `http://localhost:3001/api/login`
+    const result = await fetch(url, setting).catch((e) => 
+        errorCatch(e)
+    );
+
+    const resJson = await result.json()
+    return resJson;
+}
+
+
+export {reFresh, selectReply, selectDetail, selectAccount};

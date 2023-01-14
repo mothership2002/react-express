@@ -59,6 +59,18 @@ router.get('/api/post/:postId', async (req, resp, next) => {
   }
 });
 
+router.post('/api/login', async (req, resp, next) => {
+  const res = await conn.getRowResult(sql.userLogin(req.body.userId, req.body.password));
+
+  console.log(res);
+  if(res) {
+    resp.json(res);
+  }
+  else {
+    resp.json('err');
+  }
+})
+
 router.get('/api/reply/:postId', (req, resp, next) => {
   const replyList1 =     [
                           { 

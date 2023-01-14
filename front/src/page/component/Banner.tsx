@@ -3,17 +3,20 @@ import { Button } from 'react-bootstrap'
 import { useRecoilState } from 'recoil';
 import { toggleState } from '../../store/toggle';
 import LoginPage from '../LoginPage';
+import { userNo } from '../../store/userNo';
+
 
 let loginSession:any = null;
 
 const Banner = () => {
   
-  const [toggle , setToggle] = useRecoilState<boolean>(toggleState)
+  const [toggle , setToggle] = useRecoilState<boolean>(toggleState);
+  const [flag , setFlag] = useRecoilState<number>(userNo);
 
   const bannerButton = (loginSession:any) => {
-    if(loginSession !== null) {
+    if(flag > 0) {
       return (
-        <Button>내 정보</Button>
+        <Button variant="outline-dark">내 정보</Button>
         )
       }
       else {
