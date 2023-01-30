@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import style from '../../assets/css/board.module.css';
 import { Accordion, Button, Pagination, Spinner } from 'react-bootstrap';
 import { TYPE_ARTICLE } from '../../type/type';
-import { reFresh, selectDetail, selectReply } from '../../module/async';
+import { getReplyCount, reFresh, selectDetail, selectReply } from '../../module/async';
 
 const Board = () => {
 
@@ -27,8 +27,10 @@ const Board = () => {
 
   // 댓글 조회
   async function getSelectReply(postNo: number, replyPage:number) {
+    const count = await getReplyCount(postNo);
+    setDataList(await selectReply(postNo, dataList, replyPage, count[0].count));
+    console.log(dataList);
     
-    setDataList(await selectReply(postNo, dataList, replyPage));
   }
   
   // 게시글 목록 조회
@@ -174,9 +176,10 @@ const Board = () => {
           < div style={{ marginTop: '20px' }}>
             <Accordion key={index} >
               <Accordion.Item eventKey='0'>
-                <Accordion.Header onClick={async () => {
+                <Accordion.Header onClick={ async () => {
                   // TODO CHANGE REPLY OPEN STATUS
                   await getSelectReply(dataList[index].board_no, 1);
+
                   dataList[index].replyOpen = !dataList[index].replyOpen;
                 }}>
                   댓글
@@ -194,9 +197,9 @@ const Board = () => {
                   </div>
 
                   <Pagination>
-
+                    {dataList[index].replyCount / 10 >= 0 ? Math.ceil(dataList[index].replyCount / 10) : ''}
                   </Pagination>
-                  
+
                 </Accordion.Body>
               </Accordion.Item>
             </Accordion>

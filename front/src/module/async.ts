@@ -1,3 +1,4 @@
+import { count } from "console";
 import { METHODS } from "http";
 import { TYPE_ARTICLE } from "../type/type";
 
@@ -11,7 +12,7 @@ const errorCatch = (e:any) => {
     };
 }
 
-const getResult = (dataList:TYPE_ARTICLE[], postNo:number, resJson:any, flag:string) => {
+const getResult = (dataList:TYPE_ARTICLE[], postNo:number, resJson:any, flag:string, count:number) => {
     let copiedDataList = [...dataList];
     
     for(let a of copiedDataList) {
@@ -21,6 +22,7 @@ const getResult = (dataList:TYPE_ARTICLE[], postNo:number, resJson:any, flag:str
         }
         else {
             a.reply = resJson;
+            a.replyCount = count;
         }
       }
     }
@@ -39,6 +41,7 @@ const reFresh = async (page:number) => {
         resJson.postList.map((item:TYPE_ARTICLE, index:any) => {
             item.contentOpen = false;
             item.replyOpen = false;
+            item.replyCount = 0;
             return item;
         });   
         return resJson;
@@ -50,16 +53,13 @@ const reFresh = async (page:number) => {
     
 };
 
-const selectReply = async (postNo:number, dataList:TYPE_ARTICLE[], replyPage:number) => {
-    // 디비 샘플 넣은 후 수정해야함
+const selectReply = async (postNo:number, dataList:TYPE_ARTICLE[], replyPage:number, count:number) => {
     const url = `http://localhost:3001/api/reply/${postNo}/${replyPage}`;
     const result = await fetch(url).catch((e) =>
         errorCatch(e)
     );
-    const a = await result.json();
-    console.log(a);
     
-    return getResult(dataList, postNo, a , 'reply');
+    return getResult(dataList, postNo, await result.json(), 'reply', count);
 };
 
 
@@ -69,7 +69,7 @@ const selectDetail = async (postNo:number, dataList:TYPE_ARTICLE[]) => {
     const result = await fetch(url).catch((e) =>
         errorCatch(e)
     );
-    return getResult(dataList, postNo, await result.json(), 'content');
+    return getResult(dataList, postNo, await result.json(), 'content', 0);
 
     // 변화 감지 불가 ( 객체에 매핑이 되어있지 않아서?)
     // setDataList((dataList) => {
@@ -95,9 +95,19 @@ const selectAccount = async (userId:string, password:string) => {
         errorCatch(e)
     );
 
-    const resJson = await result.json()
+    const resJson = await result.json();
     return resJson;
 }
 
+const getReplyCount = async (postNo:number) => {
+    const url = `http://localhost:3001/api/reply-count/${postNo}`
+    const result = await fetch(url).catch((e) => 
+        errorCatch(e)
+    );
 
-export {reFresh, selectReply, selectDetail, selectAccount};
+    const count = await result.json();
+    return count;
+}
+
+
+export {reFresh, selectReply, selectDetail, selectAccount, getReplyCount};

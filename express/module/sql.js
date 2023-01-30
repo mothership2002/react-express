@@ -27,6 +27,13 @@ module.exports = {
       LIMIT ${pageReplySize} OFFSET ${(currentPage - 1) * pageReplySize}
       `;
   },
+  selectReplyCount: (postNo) => {
+    return `
+      SELECT COUNT(*)
+      FROM REPLY
+      WHERE BOARD_NO = ${postNo}
+    `
+  },
 
   selectPostCount: () => {
     return `
@@ -42,6 +49,6 @@ module.exports = {
       WHERE MEMBER_ID = '${userId}'
       AND PASSWORD = '${password}'
     `
-  }
+  },
 
 }

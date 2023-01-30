@@ -7,7 +7,8 @@ export type TYPE_ARTICLE = {
     board_content : string | undefined,
     contentOpen : boolean,
     replyOpen: boolean,
-    reply : TYPE_REPLY[] | undefined
+    reply : TYPE_REPLY[] | undefined,
+    replyCount : number,
             // [
             //   {
             //     createNo : number,

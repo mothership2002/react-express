@@ -71,15 +71,15 @@ router.post('/api/login', async (req, resp, next) => {
   }
 })
 
-router.get('/api/reply/:postId/:replyPage?', async (req, resp, next) => {
-  const res = await conn.getRowResult(sql.selectReply(req.params.postId, req.params.replyPage, 10));
+router.get('/api/reply/:postNo/:replyPage?', async (req, resp, next) => {
+  const res = await conn.getRowResult(sql.selectReply(req.params.postNo, req.params.replyPage, 10));
   let replyList = res;
 
   resp.json(replyList);
 });
 
 // 게시글 수정
-router.post('/api/post/:postId', (req, resp,next) => {
+router.post('/api/post/:postId', (req, resp, next) => {
   const title = req.body.title;
   const regNickname = req.body.regNickname;
 
@@ -88,6 +88,12 @@ router.post('/api/post/:postId', (req, resp,next) => {
 
 });
 
+router.get('/api/reply-count/:postNo', async (req, resp, next) => {
+  const res = await conn.getRowResult(sql.selectReplyCount(req.params.postNo));
+  console.log(res);
+  
+  resp.json(res);
+})
 
 // 테스트 
 router.post('/testPost', (req, resp, next) => {
