@@ -103,3 +103,9 @@
     background-color: #fafafa; 
     border-color: #ccc;
 }
+
+.replyPage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

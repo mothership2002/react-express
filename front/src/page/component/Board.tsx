@@ -60,6 +60,24 @@ const Board = () => {
     )
   }
 
+  function replyPagination(count:number) {
+    let page = [];
+    for(let i = 1 ; i <= Math.ceil(count / 10) ; i++) {
+      page.push(
+        <Pagination.Item key={i}>
+          {i}
+        </Pagination.Item>
+      );
+    }
+    return(
+      <>
+        <Pagination.Prev />
+          {page}
+        <Pagination.Last />
+      </>
+    );
+  }
+
   function PageContainer() {
     
     let items = [];
@@ -195,10 +213,11 @@ const Board = () => {
                       <Button variant="secondary">등록하기</Button>
                     </div>
                   </div>
-
-                  <Pagination>
-                    {dataList[index].replyCount / 10 >= 0 ? Math.ceil(dataList[index].replyCount / 10) : ''}
-                  </Pagination>
+                  <div className={style.replyPage}>
+                    <Pagination>
+                      {replyPagination(dataList[index].replyCount)}
+                    </Pagination>
+                  </div>
 
                 </Accordion.Body>
               </Accordion.Item>
