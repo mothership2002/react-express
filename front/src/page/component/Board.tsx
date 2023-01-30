@@ -26,8 +26,9 @@ const Board = () => {
   }
 
   // 댓글 조회
-  async function getSelectReply(postNo: number) {
-    setDataList(await selectReply(postNo, dataList));
+  async function getSelectReply(postNo: number, replyPage:number) {
+    
+    setDataList(await selectReply(postNo, dataList, replyPage));
   }
   
   // 게시글 목록 조회
@@ -175,7 +176,7 @@ const Board = () => {
               <Accordion.Item eventKey='0'>
                 <Accordion.Header onClick={async () => {
                   // TODO CHANGE REPLY OPEN STATUS
-                  await getSelectReply(dataList[index].board_no);
+                  await getSelectReply(dataList[index].board_no, 1);
                   dataList[index].replyOpen = !dataList[index].replyOpen;
                 }}>
                   댓글
@@ -191,6 +192,11 @@ const Board = () => {
                       <Button variant="secondary">등록하기</Button>
                     </div>
                   </div>
+
+                  <Pagination>
+
+                  </Pagination>
+                  
                 </Accordion.Body>
               </Accordion.Item>
             </Accordion>
@@ -206,17 +212,19 @@ const Board = () => {
         dataList[index].reply?.map((reply, index) => {
           return (
             <div key={index} className={style.replyDetailContainer}>
-              <div style={{ flex: 2 }}>{reply.replyCreater}</div>
-              <div style={{ flex: 15 }}>{reply.replyContent}</div>
+              <div style={{ flex: 2 }}>{reply.member_id}</div>
+              <div style={{ flex: 15 }}>{reply.reply_content}</div>
               <div className={style.replyDateContainer}>
                 <div >
-                  <div >{reply.replyCreateDate}</div>
+                  <div >{reply.r_create_date}</div>
                   <div style={{ height: '50%' }}>
-                    {reply.replyUpdateDate === null || reply.replyUpdateDate === undefined ? '' : reply.replyUpdateDate}
+                    {reply.r_update_date === null || reply.r_update_date === undefined ? '' : reply.r_update_date}
                   </div>
                 </div>
+
+                {/* 세션비교 */}
                 <div className={style.replyDeleteBtn} >
-                  {true === true ? <Button >삭제</Button> : ''}
+                  {reply.member_no === 2 ? <Button >삭제</Button> : ''}
                 </div>
               </div>
             </div>

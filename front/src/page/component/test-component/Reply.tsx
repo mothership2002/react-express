@@ -37,10 +37,10 @@ export default function Reply() {
         <>
           <tr key={index} >
             <td>{index + 1}</td>
-            <td>{item.replyContent}</td>
-            <td>{item.replyCreater}</td>
-            <td>{item.replyCreateDate}</td>
-            <td>{item.replyUpdateDate}</td>
+            <td>{item.reply_content}</td>
+            <td>{item.member_id}</td>
+            <td>{item.r_create_date}</td>
+            <td>{item.r_update_date}</td>
             <ButtonGroup>
               <Button >수정하기</Button>
               <Button >삭제하기</Button>

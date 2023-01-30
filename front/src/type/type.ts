@@ -41,10 +41,10 @@ export type TYPE_POST = {
 }
 
 export type TYPE_REPLY = {
-  createNo : number,
-  replyNo : number,
-  replyContent : string,
-  replyCreater : string,
-  replyCreateDate : string,
-  replyUpdateDate : string,
+  reply_no : number,
+  member_no : number,
+  member_id : string,
+  reply_content : string,
+  r_create_date : string,
+  r_update_date : string,
 }

@@ -17,13 +17,14 @@ module.exports = {
       `;
   },
 
-  selectReply: (postNo, currentPage, pagePostSize ) => {
+  selectReply: (postNo, currentPage, pageReplySize ) => {
     return `
-      SELECT * 
+      SELECT REPLY_NO, MEMBER_NO, MEMBER_ID, R_CREATE_DATE, R_UPDATE_DATE, REPLY_CONTENT
       FROM REPLY 
+      NATURAL JOIN MEMBER
       WHERE BOARD_NO = ${postNo}
       ORDER BY REPLY_NO
-      LIMIT ${pageReplySize} OFFSET ${(currentPage - 1) * pagePostSize}
+      LIMIT ${pageReplySize} OFFSET ${(currentPage - 1) * pageReplySize}
       `;
   },
 

@@ -50,13 +50,16 @@ const reFresh = async (page:number) => {
     
 };
 
-const selectReply = async (postNo:number, dataList:TYPE_ARTICLE[],) => {
+const selectReply = async (postNo:number, dataList:TYPE_ARTICLE[], replyPage:number) => {
     // 디비 샘플 넣은 후 수정해야함
-    const url = `http://localhost:3001/api/reply/${postNo}`;
+    const url = `http://localhost:3001/api/reply/${postNo}/${replyPage}`;
     const result = await fetch(url).catch((e) =>
         errorCatch(e)
     );
-    return getResult(dataList, postNo, await result.json(), 'reply');
+    const a = await result.json();
+    console.log(a);
+    
+    return getResult(dataList, postNo, a , 'reply');
 };
 
 
