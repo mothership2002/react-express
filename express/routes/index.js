@@ -90,8 +90,6 @@ router.post('/api/post/:postId', (req, resp, next) => {
 
 router.get('/api/reply-count/:postNo', async (req, resp, next) => {
   const res = await conn.getRowResult(sql.selectReplyCount(req.params.postNo));
-  console.log(res);
-  
   resp.json(res);
 })
 

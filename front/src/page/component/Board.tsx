@@ -50,7 +50,7 @@ const Board = () => {
     setReFreshCondition(!reFreshCondition);
   }
 
-
+  //로딩 화면
   function Spinning() {
     return (
       <div className={style.spinnerContainer}>
@@ -60,6 +60,7 @@ const Board = () => {
     )
   }
 
+  //리플 페이지 
   function replyPagination(count:number) {
     let page = [];
     for(let i = 1 ; i <= Math.ceil(count / 10) ; i++) {
@@ -71,40 +72,15 @@ const Board = () => {
     }
     return(
       <>
-        <Pagination.Prev />
-          {page}
-        <Pagination.Last />
+        {page}
       </>
     );
   }
 
+  //페이지네이션
   function PageContainer() {
     
     let items = [];
-    // if(maxPage - minPage < 5) {
-    //   for(let i = 1 ; i <= maxPage; i++) {
-    //     items.push(
-    //       <Pagination.Item key={i} onClick={() => {
-    //         if(i !== currentPage){
-    //           setCurrentPage(i);
-    //           getSelectPost();
-    //         }
-    //       }} active={i === currentPage}>{i}</Pagination.Item>
-    //     )
-    //   }
-    // }
-    // else { 
-    //   for(let i = currentPage ; i <= maxPage ; i++){
-    //     items.push(
-    //       <Pagination.Item key={i} onClick={() => {
-    //         if(i !== currentPage){
-    //           setCurrentPage(i);
-    //           getSelectPost();
-    //         }
-    //       }} active={i === currentPage}>{i}</Pagination.Item>
-    //     )
-    //   }
-    // }
     
     // 더미 넣고 생각ㄱ
     for(let i = 1 ; i <= maxPage; i++){
@@ -228,6 +204,7 @@ const Board = () => {
     }
   }
 
+  // 댓글 영역
   const Reply = (index: number) => {
     if (dataList[index].replyOpen) {
       return (
@@ -257,6 +234,7 @@ const Board = () => {
   }
 
   // map돌릴때 key 값 설정
+  // 게시글 영역
   const ArticleList = () => {
     if (dataList !== undefined && dataList.length > 0) {
       return dataList.map((item, index) => {
@@ -303,6 +281,7 @@ const Board = () => {
     }
   };
 
+  // 게시판 영역
   const ListBody = () => {
     if (!loading) {
       return (
