@@ -1,9 +1,25 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
-function AccountAdd() {
+const AccountAdd = () => {
+
   return (
-    <div>AccountAdd</div>
+    <div>
+      <div>
+        <div>아이디 입력란</div>
+        <input type="text" />
+      </div>
+      <div>
+        <div>패스워드</div>
+        <input type="password" />
+      </div>
+      <div>
+        <div>패스워드 확인</div>
+        <input type="password" />
+      </div>
+      
+    </div>
   )
+
 }
 
 export default AccountAdd
