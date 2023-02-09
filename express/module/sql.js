@@ -51,4 +51,12 @@ module.exports = {
     `
   },
 
+  selectDuplication: (userId) => {
+    return `
+      SELECT COUNT(MEMBER_ID)
+      FROM MEMBER
+      WHERE MEMBER_ID = '${userId}'
+    `
+  }
+
 }

@@ -91,7 +91,7 @@ router.post('/api/post/:postId', (req, resp, next) => {
 router.get('/api/reply-count/:postNo', async (req, resp, next) => {
   const res = await conn.getRowResult(sql.selectReplyCount(req.params.postNo));
   resp.json(res);
-})
+});
 
 // 테스트 
 router.post('/testPost', (req, resp, next) => {
@@ -102,6 +102,11 @@ router.post('/testPost', (req, resp, next) => {
   // const reqJson = req.body.json();
   resp.json(req.body);
 
+});
+
+router.get('/api/duplication-id/:userId', async (req, resp, next) => {
+  const res = await conn.getRowResult(sql.selectDuplication(req.params.userId));
+  resp.json(res);
 });
 
 module.exports = router;

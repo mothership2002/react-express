@@ -109,5 +109,16 @@ const getReplyCount = async (postNo:number) => {
     return count;
 }
 
+const checkDuplication = async (userId:string) => {
+    const url = `http://localhost:3001/api/duplication-id/${userId}`
+    const result = await fetch(url).catch((e) => 
+        errorCatch(e)
+    );
 
-export {reFresh, selectReply, selectDetail, selectAccount, getReplyCount};
+    const check = await result.json();
+    return check;
+}
+
+
+
+export {reFresh, selectReply, selectDetail, selectAccount, getReplyCount, checkDuplication};
