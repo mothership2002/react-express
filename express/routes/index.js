@@ -109,4 +109,9 @@ router.get('/api/duplication-id/:userId', async (req, resp, next) => {
   resp.json(res);
 });
 
+router.post('/api/account', async (req, resp, next) => {
+  const res = await conn.getRowResult(sql.insertAccount(req.body.userId, req.body.password));
+  resp.json(res);
+});
+
 module.exports = router;

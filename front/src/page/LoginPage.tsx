@@ -82,8 +82,10 @@ const LoginPage = () => {
             }}> 로그인</Button>
             <div className={styles.valueBox}>
               <Link to={`account-add`}>
-                <Button variant="outline-dark" size='sm'>
-                    회원가입
+                <Button variant="outline-dark" size='sm' 
+                  onClick={() => setToggle(!toggle)
+                }>
+                  회원가입
                 </Button>
               </Link>
             </div>

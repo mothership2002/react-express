@@ -57,6 +57,13 @@ module.exports = {
       FROM MEMBER
       WHERE MEMBER_ID = '${userId}'
     `
-  }
+  },
+
+  insertAccount: ( userId, password ) => {
+    return `
+      INSERT INTO MEMBER 
+      VALUES ( nextval('seq_member_no') , '${userId}', '${password}') RETURNING MEMBER_ID 
+    `
+  },
 
 }

@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
 import { Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import { checkDuplication, insertAccount } from '../../module/async';
 
 const AccountAdd = () => {
+
+  const movePage = useNavigate();
 
   const [ userId , setUserId ] = useState<string>("");
   const [ userPw , setUserPw ] = useState<string>("");
@@ -66,6 +69,7 @@ const AccountAdd = () => {
           alert('계정값이 옳바르지 않음.');
           return;
         }
+
         if ( !( pwRegex.test( userPw ) && pwRegex.test( userPwCheck ) ) ) {
           alert('패스워드 확인 바람');
           return;
@@ -77,8 +81,12 @@ const AccountAdd = () => {
         }
         else {
           const flag = await insertAccount(userId, userPw);
-          if ( flag ) {
-            
+          if ( flag !== undefined || flag !== null ) {
+            alert('회원가입 완료');
+            movePage('/');
+          }
+          else {
+            alert('회원가입 실패.');
           }
         }
       }}>회원가입</Button>

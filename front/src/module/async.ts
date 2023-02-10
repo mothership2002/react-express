@@ -134,7 +134,8 @@ const insertAccount = async ( id:string, pw:string ) => {
     );
 
     const flag = await result.json();
-    return flag;
+
+    return flag[0].member_id;
 }
 
 
