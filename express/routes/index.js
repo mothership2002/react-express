@@ -45,7 +45,6 @@ router.get('/api/post-all/:page?', async (req, resp, next) => {
   }
 });
 
-
 // 상세조회
 router.get('/api/post/:postId', async (req, resp, next) => {
   
@@ -57,6 +56,50 @@ router.get('/api/post/:postId', async (req, resp, next) => {
   else {
     resp.json('err');
   }
+});
+
+router.get('/api/reply/:postNo/:replyPage?', async (req, resp, next) => {
+  const res = await conn.getRowResult(sql.selectReply(req.params.postNo, req.params.replyPage, 10));
+  let replyList = res;
+
+  resp.json(replyList);
+});
+
+
+router.get('/api/reply-count/:postNo', async (req, resp, next) => {
+  const res = await conn.getRowResult(sql.selectReplyCount(req.params.postNo));
+  resp.json(res);
+});
+
+router.get('/api/duplication-id/:userId', async (req, resp, next) => {
+  const res = await conn.getRowResult(sql.selectDuplication(req.params.userId));
+  resp.json(res);
+});
+
+// 테스트 
+router.post('/testPost', (req, resp, next) => {
+  
+  console.log(req.body);
+  // const title = req.body.title;
+  // const regNickname = req.body.regNickname;
+  // const reqJson = req.body.json();
+  resp.json(req.body);
+  
+});
+
+// 게시글 수정
+router.post('/api/post/:postId', (req, resp, next) => {
+  const title = req.body.title;
+  const regNickname = req.body.regNickname;
+
+  // const updateDate = 
+  const reqJson = req.body.json();
+
+});
+
+router.post('/api/account', async (req, resp, next) => {
+  const res = await conn.getRowResult(sql.insertAccount(req.body.userId, req.body.password));
+  resp.json(res);
 });
 
 router.post('/api/login', async (req, resp, next) => {
@@ -71,47 +114,5 @@ router.post('/api/login', async (req, resp, next) => {
   }
 })
 
-router.get('/api/reply/:postNo/:replyPage?', async (req, resp, next) => {
-  const res = await conn.getRowResult(sql.selectReply(req.params.postNo, req.params.replyPage, 10));
-  let replyList = res;
-
-  resp.json(replyList);
-});
-
-// 게시글 수정
-router.post('/api/post/:postId', (req, resp, next) => {
-  const title = req.body.title;
-  const regNickname = req.body.regNickname;
-
-  // const updateDate = 
-  const reqJson = req.body.json();
-
-});
-
-router.get('/api/reply-count/:postNo', async (req, resp, next) => {
-  const res = await conn.getRowResult(sql.selectReplyCount(req.params.postNo));
-  resp.json(res);
-});
-
-// 테스트 
-router.post('/testPost', (req, resp, next) => {
-  
-  console.log(req.body);
-  // const title = req.body.title;
-  // const regNickname = req.body.regNickname;
-  // const reqJson = req.body.json();
-  resp.json(req.body);
-
-});
-
-router.get('/api/duplication-id/:userId', async (req, resp, next) => {
-  const res = await conn.getRowResult(sql.selectDuplication(req.params.userId));
-  resp.json(res);
-});
-
-router.post('/api/account', async (req, resp, next) => {
-  const res = await conn.getRowResult(sql.insertAccount(req.body.userId, req.body.password));
-  resp.json(res);
-});
 
 module.exports = router;

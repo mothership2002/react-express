@@ -9,6 +9,7 @@ module.exports = {
       LIMIT ${pagePostSize} OFFSET ${(currentPage - 1) * pagePostSize}
     `;
   },
+
   selectConent: (postNo) => {
     return `
       SELECT board_content
@@ -27,6 +28,7 @@ module.exports = {
       LIMIT ${pageReplySize} OFFSET ${(currentPage - 1) * pageReplySize}
       `;
   },
+  
   selectReplyCount: (postNo) => {
     return `
       SELECT COUNT(*)
