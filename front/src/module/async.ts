@@ -119,6 +119,24 @@ const checkDuplication = async (userId:string) => {
     return check;
 }
 
+const insertAccount = async ( id:string, pw:string ) => {
+    const setting = {
+        method : 'Post',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({'userId': id, 'password': pw}),
+    }
+
+    const url = `http://localhost:3001/api/account`;
+    const result = await fetch(url, setting).catch((e) => 
+        errorCatch(e)
+    );
+
+    const flag = await result.json();
+    return flag;
+}
 
 
-export {reFresh, selectReply, selectDetail, selectAccount, getReplyCount, checkDuplication};
+
+export {reFresh, selectReply, selectDetail, selectAccount, getReplyCount, checkDuplication, insertAccount};
