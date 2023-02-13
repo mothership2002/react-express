@@ -96,6 +96,7 @@ const selectAccount = async (userId:string, password:string) => {
     );
 
     const resJson = await result.json();
+    
     return resJson;
 }
 

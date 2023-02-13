@@ -17,8 +17,7 @@ router.get('/index', function(req, resp, next) {
   resp.render("hello_world", { title : 'test'});
 });
 
-// 전체조회
-router.use('/api/post-all/:page?', function(req, res, next) {
+router.use(function(req, res, next) {
   console.log('Request URL:', req.originalUrl);
   next();
 }, function (req, res, next) {
@@ -76,6 +75,7 @@ router.get('/api/duplication-id/:userId', async (req, resp, next) => {
   resp.json(res);
 });
 
+
 // 테스트 
 router.post('/testPost', (req, resp, next) => {
   
@@ -104,15 +104,14 @@ router.post('/api/account', async (req, resp, next) => {
 
 router.post('/api/login', async (req, resp, next) => {
   const res = await conn.getRowResult(sql.userLogin(req.body.userId, req.body.password));
-
-  console.log(res);
-  if(res) {
+  
+  if(res.length !== 0) {
+    resp.cookie('member_no', res[0].member_no, httpOnly=true);
     resp.json(res);
   }
   else {
     resp.json('err');
   }
 })
-
 
 module.exports = router;

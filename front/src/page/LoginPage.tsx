@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Form, InputGroup } from 'react-bootstrap';
+import { useCookies } from 'react-cookie';
 import { Link } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import styles from '../assets/css/modal.module.css';
@@ -12,7 +13,8 @@ const LoginPage = () => {
   const [toggle , setToggle] = useRecoilState<boolean>(toggleState);
   const [userId , setUserId] = useState<string>();
   const [password , setPassword] = useState<string>();
-  const [flag , setFlag] = useRecoilState<number>(userNo);
+  const [memberNo , setMemberNo] = useRecoilState<number>(userNo);
+  
 
   const checkSum = (value:string | undefined | null, type:string) => {
     if ( value === null || value === undefined || value === '') {
@@ -69,13 +71,21 @@ const LoginPage = () => {
               }
 
               if(userId !== undefined && password !== undefined) {
-                const resJson = await selectAccount(userId, password)                
-                if(resJson.length > 0){
-                  setFlag(resJson[0].member_no);
-                  setToggle(!toggle);
+                const resJson = await selectAccount(userId, password)
+                
+                if(document.cookie.indexOf('member_no=') === -1) {
+                  if(resJson.length > 0){
+                    // setFlag(resJson[0].member_no);
+                    document.cookie = 'member_no=' + resJson[0].member_no;
+                    setMemberNo(resJson[0].member_no);
+                    setToggle(!toggle);
+                  }
+                  else {
+                    alert('아이디 또는 비밀번호가 일치하지 않습니다.');
+                  }
                 }
                 else {
-                  alert('아이디 또는 비밀번호가 일치하지 않습니다.');
+                  alert('이미 로그인 되어있는');
                 }
               }
               

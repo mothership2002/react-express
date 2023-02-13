@@ -11,10 +11,9 @@ let loginSession:any = null;
 const Banner = () => {
   
   const [toggle , setToggle] = useRecoilState<boolean>(toggleState);
-  const [flag , setFlag] = useRecoilState<number>(userNo);
 
-  const bannerButton = (loginSession:any) => {
-    if(flag > 0) {
+  const bannerButton = () => {
+    if(document.cookie.indexOf('member_no') !== -1) {
       return (
         <Button variant="outline-dark">내 정보</Button>
         )
@@ -33,7 +32,7 @@ const Banner = () => {
                   justifyContent : 'space-between',
                   margin : '12px'}}>
       <div>게시판</div>
-      {bannerButton(loginSession)}
+      {bannerButton()}
       {LoginPage()}
     </div>
   )

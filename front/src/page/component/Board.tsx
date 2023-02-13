@@ -3,6 +3,8 @@ import style from '../../assets/css/board.module.css';
 import { Accordion, Button, Pagination, Spinner } from 'react-bootstrap';
 import { TYPE_ARTICLE } from '../../type/type';
 import { getReplyCount, reFresh, selectDetail, selectReply } from '../../module/async';
+import { useRecoilState } from 'recoil';
+import { userNo } from '../../store/userNo';
 
 const Board = () => {
 
@@ -13,7 +15,7 @@ const Board = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [maxPage, setMaxPage] = useState<number>(0);
   const [minPage, setMinPage] = useState<number>(0);
-
+  const [memberNo, setMemberNo] = useRecoilState<number>(userNo);
   const [loading, setLoading] = useState<boolean>(true);
   
   // 토글용 새로고침
@@ -223,7 +225,7 @@ const Board = () => {
 
                 {/* 세션비교 */}
                 <div className={style.replyDeleteBtn} >
-                  {reply.member_no === 2 ? <Button >삭제</Button> : ''}
+                  {reply.member_no === memberNo ? <Button >삭제</Button> : ''}
                 </div>
               </div>
             </div>
